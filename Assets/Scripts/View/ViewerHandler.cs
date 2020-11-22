@@ -92,8 +92,6 @@ public class ViewerHandler : MonoBehaviour
         NotEnoghtMoney
     }
     public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
-
-
         switch (type) {
             case LogType.Roll:
                 LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
@@ -118,23 +116,16 @@ public class ViewerHandler : MonoBehaviour
             default:
                 break;
         }
+    }
 
 
-
-
-
-
-        //if (MainGameData.state == GameData.State.RollDie) {
-        //    LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
-        //    LogSum_Text.text = "Roll the die";
-        //}
-
-        //else {
-         
-        //    LogTitle_Text.text = "checking";
-        //    LogSum_Text.text = sum.ToString();
-
-        //}
+    public void InitTilesCosts(GameData MainGameData) {
+        for (int i = 0; i < TILE_MAP.Length; i++) {
+            if (TILE_MAP[i].transform.Find("Cost_Text") != null) {
+                Property temp = (Property)MainGameData.gameTileMap[i];
+                TILE_MAP[i].transform.Find("Cost_Text").GetComponent<Text>().text = temp.GetCostPrice() + "$";
+            }
+        }
     }
 
     /// <summary>

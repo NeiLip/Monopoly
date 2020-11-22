@@ -186,6 +186,8 @@ public class GameHandler : MonoBehaviour
             MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject
             MainGameData.gameTileMap[i].SetTileIndex(i);
         }
+
+        ViewerHandler.InitTilesCosts(MainGameData);
     }
 
     void PlayersHandlingAtStart() {
