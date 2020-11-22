@@ -6,7 +6,7 @@ public class GameData
 {
 
     public readonly int NUMBER_OF_PLAYERS = 2;
-    public readonly int STARTING_AMOUNT_OF_MONEY = 200;
+    public readonly int STARTING_AMOUNT_OF_MONEY = 2500;
 
    // [HideInInspector]
     public Player[] players;

@@ -19,4 +19,25 @@ public class Property : Tile
         costPrice = _costPrice;
         finePrice = _finePrice;
     }
+
+    public void SetOwnedByPlayerIndex(int _ownedBy) {
+        ownedBy = _ownedBy;
+    }
+    public int GetOwnedByPlayerIndex() {
+        return ownedBy;
+    }
+
+    public void SetCostPrice(int _costPrice) {
+        costPrice = _costPrice;
+    }
+    public int GetCostPrice() {
+        return costPrice;
+    }
+
+    public void SetFinePrice(int _finePrice) {
+        finePrice = _finePrice;
+    }
+    public int GetFinePrice() {
+        return finePrice;
+    }
 }

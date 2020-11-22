@@ -61,12 +61,45 @@ public class GameHandler : MonoBehaviour
 
 
     void ReachedFinalTile() {
+        Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
+
+        Debug.Log("Tile name" + tempTile.GetTileIndex());
+
+        if (tempTile.GetType() == typeof(Property)) {
+            Property tempProperty = (Property)tempTile;
+
+            if (tempProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // This property is already yours
+
+            }
+            else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for purchase
+                MainGameData.players[MainGameData.whosTurnIsIt].TakeMoney(tempProperty.GetCostPrice());
+                tempProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
+                tempProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
+            }
+            else { //Other player already purchased this property
+                //MainGameData.players[(MainGameData.whosTurnIsIt)].TakeMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
+                //MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GiveMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
+
+            }
+
+            
+            
+        }
+
+        else { //Special tile
+            Debug.Log("Special Tile");
+        }
+
+
+
+
 
         MainGameData.IncreaseWhosTurnIsIt();
 
-        ViewerHandler.UpdateWhosTurnIsItIndicator(MainGameData);
+        ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.ROLL_THE_DIE_WINDOW);
     }
+
 
 
     public void ResetGame() {
@@ -81,10 +114,7 @@ public class GameHandler : MonoBehaviour
     void MapHandlingAtStart() {
         MainGameData.gameTileMap = new Tile[ViewerHandler.TILE_MAP.Length];
 
-        for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {
-            
-            MainGameData.gameTileMap[i] = new Tile(ViewerHandler.TILE_MAP[i].gameObject, i);
-
+        for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {     
             //Alway the starting point
             if (i == 0) {
                 MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.StartingPoint, 200);
@@ -95,6 +125,9 @@ public class GameHandler : MonoBehaviour
             else {
                 MainGameData.gameTileMap[i] = new Property(-1, 400, 20);
             }
+
+            MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject
+            MainGameData.gameTileMap[i].SetTileIndex(i);
         }
     }
 

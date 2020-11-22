@@ -62,7 +62,7 @@ public class ViewerHandler : MonoBehaviour
         window.SetActive(false);
     }
 
-    public void UpdateWhosTurnIsItIndicator(GameData MainGameData) {
+    public void UpdateHUD(GameData MainGameData) {
         for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             if (i == MainGameData.whosTurnIsIt)
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(true);
@@ -70,6 +70,7 @@ public class ViewerHandler : MonoBehaviour
             else
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
 
+            MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = MainGameData.players[i].GetMoney().ToString();
         }
     }
 
