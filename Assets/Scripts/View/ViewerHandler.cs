@@ -7,15 +7,21 @@ public class ViewerHandler : MonoBehaviour
 {
 
     [Header("Base Textures")]
+    public Sprite[] DIE_SPRITES;
     public Sprite[] BASE_PLAYERS_TILES_SPRITES;
     public GameObject[] PLAYERS_PIECES;
-
     public GameObject BasePlayerHUD;
+
+    [Header("Gameobjects")]
     public GameObject HUD_Canvas;
+    public GameObject DIE_BACKGROUND;
+    public GameObject CURRENT_DIE;
 
     [Header("Tile Map")]
     public GameObject[] TILE_MAP;
 
+    [Header("Windows")]
+    public GameObject ROLL_THE_DIE_WINDOW;
 
     private readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
 
@@ -49,6 +55,13 @@ public class ViewerHandler : MonoBehaviour
     }
 
 
+    public void ShowWindow(GameObject window) {
+        window.SetActive(true);
+    }
+    public void HideWindow(GameObject window) {
+        window.SetActive(false);
+    }
+
     public void UpdateWhosTurnIsItIndicator(GameData MainGameData) {
         for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             if (i == MainGameData.whosTurnIsIt)
@@ -75,13 +88,17 @@ public class ViewerHandler : MonoBehaviour
     /// </summary>
     /// <param name="player">  Player to place </param>
     /// <param name="newPosition"> The new tile index </param>
-    public void MovePlayerToPosition(Player player, int newPosition) {
+    public void MovePlayerToPosition(GameHandler gameHandler,Player player, int newPosition) {
         Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
-        StartCoroutine(MoveplayerOverSeconds(player.GetPlayerPieceGameObjectn(), tempNewPosition));
+        StartCoroutine(MoveplayerOverSeconds(gameHandler, player.GetPlayerPieceGameObjectn(), tempNewPosition));
 
     }
 
-    private IEnumerator MoveplayerOverSeconds(GameObject objectToMove, Vector3 endPosition) {
+    public void UpdateCurrentDie(int rolledNumber) {
+        CURRENT_DIE.GetComponent<SpriteRenderer>().sprite = DIE_SPRITES[rolledNumber - 1];
+    }
+
+    private IEnumerator MoveplayerOverSeconds(GameHandler gameHandler, GameObject objectToMove, Vector3 endPosition) {
         float time = .5f;
         float elapsedTime = 0;
         Vector3 startingPos = objectToMove.transform.position;
@@ -93,6 +110,7 @@ public class ViewerHandler : MonoBehaviour
         }
         objectToMove.transform.position = endPosition;
 
+        gameHandler.PlayTurn();
 //        gameData.isBringCardToFrontCoroutineRun = false;
     }
 }

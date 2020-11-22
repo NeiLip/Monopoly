@@ -23,30 +23,49 @@ public class GameHandler : MonoBehaviour
         ResetGame();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.W)) {
-
-            PlayTurn();
+  
 
 
-        }
+
+    public void RollTheDie() {
+        ViewerHandler.HideWindow(ViewerHandler.ROLL_THE_DIE_WINDOW);
+
+        int tempRoll = Random.Range(1, 7);
+        ViewerHandler.UpdateCurrentDie(tempRoll);
+
+        Debug.Log("Rolled: " + tempRoll);
+        MainGameData.players[MainGameData.whosTurnIsIt].SetMovesLeft(tempRoll);
+
+        PlayTurn();
+
     }
 
 
+    public void PlayTurn() {
+        if(MainGameData.players[MainGameData.whosTurnIsIt].GetMovesLeft() <= 0) {
+            ReachedFinalTile();
+            return;
+        }
+
+        else {
+            MainGameData.players[MainGameData.whosTurnIsIt].SetCurrentPosition((MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
+
+            
+            ViewerHandler.MovePlayerToPosition(this, MainGameData.players[MainGameData.whosTurnIsIt], MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition());
+            MainGameData.players[MainGameData.whosTurnIsIt].MoveOneTile();
+        }
 
 
-    void PlayTurn() {
-        MainGameData.players[MainGameData.whosTurnIsIt].SetCurrentPosition((MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
+
+    }
 
 
-        ViewerHandler.MovePlayerToPosition(MainGameData.players[MainGameData.whosTurnIsIt], MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition());
-        
+    void ReachedFinalTile() {
 
         MainGameData.IncreaseWhosTurnIsIt();
 
         ViewerHandler.UpdateWhosTurnIsItIndicator(MainGameData);
+        ViewerHandler.ShowWindow(ViewerHandler.ROLL_THE_DIE_WINDOW);
     }
 
 

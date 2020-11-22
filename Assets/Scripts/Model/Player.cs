@@ -66,6 +66,11 @@ public class Player : MonoBehaviour
     public int GetMovesLeft() {
         return movesLeft;
     }
+    //Gets number of moves left
+    public void MoveOneTile() {
+        movesLeft--;
+        if (movesLeft < 0) movesLeft = 0;
+    }
 
     //Sets amount money
     public void SetMoney(int _money) {
