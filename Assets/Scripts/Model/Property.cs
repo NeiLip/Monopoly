@@ -7,17 +7,17 @@ public class Property : Tile
 
     int ownedBy;
     int costPrice; //How much the property costs
-    int finePrice; //How much a player have to pay if property is held by the other player
+    int taxPrice; //How much a player have to pay if property is held by the other player
 
     public Property() {
         ownedBy = -1;
         costPrice = -1;
-        finePrice = -1;
+        taxPrice = -1;
     }
     public Property(int _ownedBy, int _costPrice, int _finePrice) {
         ownedBy = _ownedBy;
         costPrice = _costPrice;
-        finePrice = _finePrice;
+        taxPrice = _finePrice;
     }
 
     public void SetOwnedByPlayerIndex(int _ownedBy) {
@@ -35,9 +35,9 @@ public class Property : Tile
     }
 
     public void SetFinePrice(int _finePrice) {
-        finePrice = _finePrice;
+        taxPrice = _finePrice;
     }
     public int GetFinePrice() {
-        return finePrice;
+        return taxPrice;
     }
 }

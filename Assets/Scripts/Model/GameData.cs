@@ -11,7 +11,7 @@ public class GameData
 
 
     public readonly int NUMBER_OF_PLAYERS = 2;
-    public readonly int STARTING_AMOUNT_OF_MONEY = 300;
+    public readonly int STARTING_AMOUNT_OF_MONEY = 250;
 
    
     public Player[] players;

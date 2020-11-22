@@ -46,7 +46,9 @@ public class GameHandler : MonoBehaviour
         else { //Playing
             
             MainGameData.state = GameData.State.RollDie;
-            ViewerHandler.UpdateLogWindow(MainGameData, -1);
+            MainGameData.IncreaseWhosTurnIsIt();
+            ViewerHandler.UpdateHUD(MainGameData);
+            ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll); //Updates to "Roll the die" title
         }
     }
 
@@ -95,17 +97,26 @@ public class GameHandler : MonoBehaviour
 
             }
             else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for purchase
-                MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(tempProperty.GetCostPrice());
-                tempProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
-                tempProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
 
-                ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetCostPrice());
+                //make sure the player has enough money to buy the property
+                if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - tempProperty.GetCostPrice() > 0) { //that means the player can afford buying the property
+                    MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(tempProperty.GetCostPrice());
+                    tempProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
+                    tempProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
+
+                    ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);
+                }
+                else {
+                    ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetCostPrice(), ViewerHandler.LogType.NotEnoghtMoney);
+                }
+
+          
             }
             else { //Other player already purchased this property
                 MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
                 MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].IncreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
 
-                ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetFinePrice());
+                ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetFinePrice(), ViewerHandler.LogType.PayTax);
             }
 
            
@@ -118,11 +129,8 @@ public class GameHandler : MonoBehaviour
             int tempReward = specialTile.GetReward();
             MainGameData.players[(MainGameData.whosTurnIsIt)].IncreaseMoney(tempReward);
 
-            ViewerHandler.UpdateLogWindow(MainGameData, tempReward);
+            ViewerHandler.UpdateLogWindow(MainGameData, tempReward, ViewerHandler.LogType.ReceiveBonusMoney);
         }
-
-
-        MainGameData.IncreaseWhosTurnIsIt();
 
         ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
@@ -152,6 +160,7 @@ public class GameHandler : MonoBehaviour
         PlayersHandlingAtStart();
 
         ViewerHandler.UpdateHUD(MainGameData);
+        ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll);
 
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
     }
@@ -168,6 +177,7 @@ public class GameHandler : MonoBehaviour
         foreach (GameObject gameObject in MainGameData.PlayersHUD) {
             Destroy(gameObject);
         }
+        MainGameData.state = GameData.State.RollDie;
 
     }
 

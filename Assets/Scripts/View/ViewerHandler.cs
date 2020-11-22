@@ -83,17 +83,58 @@ public class ViewerHandler : MonoBehaviour
     }
 
 
-    public void UpdateLogWindow(GameData MainGameData, int sum) {
-        if (MainGameData.state == GameData.State.RollDie) {
-            LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
-            LogSum_Text.text = "Roll the die";
+
+    public enum LogType {
+        Roll,
+        BuyProperty,
+        PayTax,
+        ReceiveBonusMoney,
+        NotEnoghtMoney
+    }
+    public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
+
+
+        switch (type) {
+            case LogType.Roll:
+                LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
+                LogSum_Text.text = "Roll the die";
+                break;
+            case LogType.BuyProperty:
+                LogTitle_Text.text = "You landed on a free property and bought it";
+                LogSum_Text.text = "Pay " + sum.ToString() + "$";
+                break;
+            case LogType.PayTax:
+                LogTitle_Text.text = "You landed on Player " + (((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1) + "' property";
+                LogSum_Text.text = "Lose " + sum.ToString() + "$";
+                break;
+            case LogType.ReceiveBonusMoney:
+                LogTitle_Text.text = "You landed on a Bonus tile";
+                LogSum_Text.text = "Get " + sum.ToString() + "$";
+                break;
+            case LogType.NotEnoghtMoney:
+                LogTitle_Text.text = "It costs " + sum +"$. You can not afford it" ;
+                LogSum_Text.text = "Sorry";
+                break;
+            default:
+                break;
         }
 
-        else {
-            LogTitle_Text.text = "checking";
-            LogSum_Text.text = sum.ToString();
 
-        }
+
+
+
+
+        //if (MainGameData.state == GameData.State.RollDie) {
+        //    LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
+        //    LogSum_Text.text = "Roll the die";
+        //}
+
+        //else {
+         
+        //    LogTitle_Text.text = "checking";
+        //    LogSum_Text.text = sum.ToString();
+
+        //}
     }
 
     /// <summary>
