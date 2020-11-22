@@ -21,4 +21,10 @@ public class GameData
 
     }
 
+    public void IncreaseWhosTurnIsIt() {
+        whosTurnIsIt++;
+
+        if (whosTurnIsIt == NUMBER_OF_PLAYERS) whosTurnIsIt = 0; //If we are last player in array, next player is at 0
+    }
+
 }

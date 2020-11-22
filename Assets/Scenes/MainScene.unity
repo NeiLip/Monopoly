@@ -148,17 +148,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 72679692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 7}
+  m_LocalScale: {x: 0.051815704, y: 0.051815704, z: 0.051815704}
   m_Children: []
   m_Father: {fileID: 623623155}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1}
+  m_SizeDelta: {x: 1362, y: 796}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &72679694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,7 +207,7 @@ Canvas:
   m_GameObject: {fileID: 72679692}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 963194227}
   m_PlaneDistance: 17
   m_PixelPerfect: 0
@@ -1333,7 +1333,7 @@ Camera:
   far clip plane: 1000
   field of view: 101
   orthographic: 1
-  orthographic size: 11.674166
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1561,7 +1561,7 @@ MonoBehaviour:
   PLAYERS_PIECES:
   - {fileID: 3350663268567564623, guid: 43cfa908c974d444bb3715d21361eefa, type: 3}
   - {fileID: 3809394328580510365, guid: d396ce327ebc74efe898667b0b14835d, type: 3}
-  BasePlayerHUD: {fileID: 2030136580793109772, guid: d813abc3718ca475a98f164989d15180,
+  BasePlayerHUD: {fileID: 1551562189797202618, guid: d813abc3718ca475a98f164989d15180,
     type: 3}
   HUD_Canvas: {fileID: 72679692}
   TILE_MAP:
@@ -1610,7 +1610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418885840}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.35353178, y: 0.31942356, z: -57.361702}
+  m_LocalPosition: {x: -0.35353178, y: 0.31942356, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2355,8 +2355,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1006758361
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3cd60b0fdd4de4e339564c1a6bf6615b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

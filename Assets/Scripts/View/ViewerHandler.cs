@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ViewerHandler : MonoBehaviour
 {
@@ -22,10 +23,42 @@ public class ViewerHandler : MonoBehaviour
     /// <summary>
     /// Initiating players HUDs for two players
     /// </summary>
-    public void InitPlayersHUD() {
+    public void InitPlayersHUD(GameData MainGameData) {
+
+        MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
+
+        for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
+            MainGameData.PlayersHUD[i] = Instantiate(BasePlayerHUD);
+            MainGameData.PlayersHUD[i].transform.SetParent(HUD_Canvas.transform);
+            MainGameData.PlayersHUD[i].transform.localScale = new Vector3(1f, 1f, 1f);
+
+            if (i == 0) {//player 1
+                MainGameData.PlayersHUD[0].transform.localPosition = new Vector3(-88.5f, 71.8f, 0f);
+
+
+            }
+            else if (i == 1) {//player2
+                MainGameData.PlayersHUD[1].transform.localPosition = new Vector3(88.5f, 71.8f, 0f);
+                MainGameData.PlayersHUD[1].transform.Find("PlayerName_Text").GetComponent<Text>().text = "PLayer 2";
+                MainGameData.PlayersHUD[1].transform.Find("PlayerName_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
+                MainGameData.PlayersHUD[1].transform.Find("PlayerMoney_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
+                MainGameData.PlayersHUD[1].transform.Find("active_player_indication").gameObject.SetActive(false);
+            }
+        }
 
     }
 
+
+    public void UpdateWhosTurnIsItIndicator(GameData MainGameData) {
+        for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
+            if (i == MainGameData.whosTurnIsIt)
+                MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(true);
+
+            else
+                MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
+
+        }
+    }
 
     /// <summary>
     /// Placing a player piece on a specific tile

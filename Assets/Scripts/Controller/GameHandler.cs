@@ -14,18 +14,8 @@ public class GameHandler : MonoBehaviour
         MainGameData = new GameData();
 
 
-        MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
-        for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
-            MainGameData.PlayersHUD[i] = Instantiate(ViewerHandler.BasePlayerHUD);
-            MainGameData.PlayersHUD[i].transform.SetParent(ViewerHandler.HUD_Canvas.transform);
-            MainGameData.PlayersHUD[i].transform.localScale = new Vector3(1f,1f,1f);
-        }
+        ViewerHandler.InitPlayersHUD(MainGameData);
 
-        MainGameData.PlayersHUD[0].transform.localPosition = new Vector3(-88.7f, 71.8f, 0f);
-
-
-        MainGameData.PlayersHUD[1].transform.Find("PlayerName_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
-        MainGameData.PlayersHUD[1].transform.Find("PlayerMoney_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
     }
     // Start is called before the first frame update
     void Start()
@@ -37,19 +27,27 @@ public class GameHandler : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.W)) {
-            MainGameData.players[0].SetMovesLeft(4);
-      
-            MainGameData.players[0].SetCurrentPosition((MainGameData.players[0].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
+
+            PlayTurn();
 
 
-            ViewerHandler.MovePlayerToPosition(MainGameData.players[0], MainGameData.players[0].GetCurrentPosition());
         }
     }
 
 
 
 
+    void PlayTurn() {
+        MainGameData.players[MainGameData.whosTurnIsIt].SetCurrentPosition((MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
 
+
+        ViewerHandler.MovePlayerToPosition(MainGameData.players[MainGameData.whosTurnIsIt], MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition());
+        
+
+        MainGameData.IncreaseWhosTurnIsIt();
+
+        ViewerHandler.UpdateWhosTurnIsItIndicator(MainGameData);
+    }
 
 
     public void ResetGame() {
