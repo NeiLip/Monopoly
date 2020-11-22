@@ -11,9 +11,11 @@ public class GameData
 
 
     public readonly int NUMBER_OF_PLAYERS = 2;
-    public readonly int STARTING_AMOUNT_OF_MONEY = 250;
+    public readonly int STARTING_AMOUNT_OF_MONEY = 1500;
+    public readonly int PROPERTIES_PRICE_AVERAGE = 100;
 
-   
+
+
     public Player[] players;
     
     public int whosTurnIsIt;
@@ -24,6 +26,8 @@ public class GameData
 
     public State state;
 
+    public Property[] PRE_MADE_PROPERTIES;
+
 
     //Default Setter
     public GameData() {
@@ -32,6 +36,8 @@ public class GameData
         whosTurnIsIt = 0;
         PlayersHUD = new GameObject[0];
         state = State.RollDie;
+
+        CreatePreMadeProperties();
     }
 
     public void IncreaseWhosTurnIsIt() {
@@ -41,7 +47,22 @@ public class GameData
     }
 
 
+    void CreatePreMadeProperties() {
+        PRE_MADE_PROPERTIES = new Property[20];
 
+        int minPrice = (int)(PROPERTIES_PRICE_AVERAGE * 0.5);
+        int maxPrice = (int)(PROPERTIES_PRICE_AVERAGE * 1.5);
+        int sub = maxPrice - minPrice;
+
+        int increment = (int)(sub / PRE_MADE_PROPERTIES.Length);
+
+        int currentPrice = minPrice;
+        
+        for (int i = 0; i < PRE_MADE_PROPERTIES.Length; i++) {
+            PRE_MADE_PROPERTIES[i] = new Property(-1, currentPrice, (int)(currentPrice * 0.1));
+            currentPrice += increment;
+        }
+    }
 
 
 }

@@ -104,7 +104,7 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             case LogType.PayTax:
-                LogTitle_Text.text = "You landed on Player " + (((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1) + "' property";
+                LogTitle_Text.text = "You landed on Player " + (((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1) + "'s property";
                 LogSum_Text.text = "Lose " + sum.ToString() + "$";
                 break;
             case LogType.ReceiveBonusMoney:

@@ -19,22 +19,6 @@ public class GameHandler : MonoBehaviour
    
 
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-     //   ResetGame();
-    }
-
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.W)) {
-           
-            SpecialTile temp = (SpecialTile)MainGameData.gameTileMap[6];
-
-            Debug.Log("Reward: " + temp.GetReward());
-           
-        }
-    }
 
 
     public void UpdateLogWindow() {
@@ -156,7 +140,7 @@ public class GameHandler : MonoBehaviour
 
         ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);
 
-        MapHandlingAtStart();
+        MapBuildingAtStart();
         PlayersHandlingAtStart();
 
         ViewerHandler.UpdateHUD(MainGameData);
@@ -181,10 +165,11 @@ public class GameHandler : MonoBehaviour
 
     }
 
-    void MapHandlingAtStart() {
+    void MapBuildingAtStart() {
         MainGameData.gameTileMap = new Tile[ViewerHandler.TILE_MAP.Length];
 
-        for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {     
+        int preMadePropertiesIndex = 0;
+        for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {
             //Always the starting point
             if (i == 0) {
                 MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.StartingPoint, 200);
@@ -193,7 +178,9 @@ public class GameHandler : MonoBehaviour
             else if (i == 6 || i == 12 || i == 18) MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.Bonus, 50);
             //Property
             else {
-                MainGameData.gameTileMap[i] = new Property(-1, 200, 20);
+                //MainGameData.gameTileMap[i] = new Property();
+                MainGameData.gameTileMap[i] = MainGameData.PRE_MADE_PROPERTIES[preMadePropertiesIndex];
+                preMadePropertiesIndex++;
             }
 
             MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject
