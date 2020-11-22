@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
+    // For future possible expansions.
+    // Not in use in this version
     public enum PlayerState {
         Null,
         RollingDice,
@@ -16,7 +19,7 @@ public class Player : MonoBehaviour
     int currentPosition;
     int money;
 
-    Property[] propertiesBought; //can be use in the future for expansions, we don't really need it so I won't use it
+    Property[] propertiesBought; //can be use in the future for expansions, we don't really need it so I'm not using it
 
     int movesLeft;
     PlayerState playerState;

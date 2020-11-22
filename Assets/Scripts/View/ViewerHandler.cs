@@ -22,11 +22,14 @@ public class ViewerHandler : MonoBehaviour
     public GameObject[] TILE_MAP;
 
     [Header("Windows")]
-    public GameObject ROLL_THE_DIE_WINDOW;
+    public GameObject GAME_LOG_WINDOW;
     public GameObject MAIN_MENU_WINDOW;
 
     [Header("Texts")]
     public Text MainMenuTitle_Text;
+    public Text LogSum_Text; 
+    public Text LogTitle_Text;
+
 
     private readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
 
@@ -79,6 +82,20 @@ public class ViewerHandler : MonoBehaviour
         }
     }
 
+
+    public void UpdateLogWindow(GameData MainGameData, int sum) {
+        if (MainGameData.state == GameData.State.RollDie) {
+            LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
+            LogSum_Text.text = "Roll the die";
+        }
+
+        else {
+            LogTitle_Text.text = "checking";
+            LogSum_Text.text = sum.ToString();
+
+        }
+    }
+
     /// <summary>
     /// Placing a player piece on a specific tile
     /// </summary>
@@ -118,5 +135,11 @@ public class ViewerHandler : MonoBehaviour
 
         gameHandler.PlayTurn();
 //        gameData.isBringCardToFrontCoroutineRun = false;
+    }
+
+    public void GameOver(GameData MainGameData) {
+        int winningPlayer = ((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1;
+        MainMenuTitle_Text.text = "Player " + winningPlayer + "\nYOU WIN!";
+        ShowWindow(MAIN_MENU_WINDOW);
     }
 }
