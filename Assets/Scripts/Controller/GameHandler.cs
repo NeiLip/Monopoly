@@ -37,6 +37,8 @@ public class GameHandler : MonoBehaviour
 
 
             ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll); //Updates to "Roll the die" title
+
+            ViewerHandler.UpdateHUD(MainGameData);
         }
     }
 
@@ -77,8 +79,7 @@ public class GameHandler : MonoBehaviour
     }
 
 
-    void BuyProperty() {
-
+    void PayMoney() {
     }
 
     void ReachedFinalTile() {
@@ -126,7 +127,7 @@ public class GameHandler : MonoBehaviour
             ViewerHandler.UpdateLogWindow(MainGameData, tempReward, ViewerHandler.LogType.ReceiveBonusMoney);
         }
 
-        ViewerHandler.UpdateHUD(MainGameData);
+       // ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
     }
 
