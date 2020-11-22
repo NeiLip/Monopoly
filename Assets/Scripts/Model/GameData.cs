@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData : MonoBehaviour
+public class GameData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+    public readonly int NUMBER_OF_PLAYERS = 2;
+    public readonly int STARTING_AMOUNT_OF_MONEY = 200;
+
+   // [HideInInspector]
+    public Player[] players;
+    //[HideInInspector]
+    public int whosTurnIsIt;
+
+    public Tile[] gameTileMap;
+
+    public GameObject[] PlayersHUD;
+
+    public GameData() {
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
