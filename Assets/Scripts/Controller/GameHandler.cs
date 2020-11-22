@@ -23,7 +23,16 @@ public class GameHandler : MonoBehaviour
         ResetGame();
     }
 
-  
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.W)) {
+           
+            SpecialTile temp = (SpecialTile)MainGameData.gameTileMap[6];
+
+            Debug.Log("Reward: " + temp.GetReward());
+           
+        }
+    }
 
 
 
@@ -72,22 +81,23 @@ public class GameHandler : MonoBehaviour
 
             }
             else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for purchase
-                MainGameData.players[MainGameData.whosTurnIsIt].TakeMoney(tempProperty.GetCostPrice());
+                MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(tempProperty.GetCostPrice());
                 tempProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
                 tempProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
             }
             else { //Other player already purchased this property
-                //MainGameData.players[(MainGameData.whosTurnIsIt)].TakeMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
-                //MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GiveMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
-
+                MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
+                MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].IncreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
             }
-
-            
-            
         }
 
         else { //Special tile
-            Debug.Log("Special Tile");
+
+            SpecialTile specialTile = (SpecialTile)tempTile;
+            int tempReward = specialTile.GetReward();
+            MainGameData.players[(MainGameData.whosTurnIsIt)].IncreaseMoney(tempReward);
+
+            Debug.Log("Got " + tempReward);
         }
 
 
@@ -115,15 +125,15 @@ public class GameHandler : MonoBehaviour
         MainGameData.gameTileMap = new Tile[ViewerHandler.TILE_MAP.Length];
 
         for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {     
-            //Alway the starting point
+            //Always the starting point
             if (i == 0) {
                 MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.StartingPoint, 200);
             }
-            //Bonus points
-            else if (i == 6 || i == 12 || i == 18) MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.Bonus, 200);
+            //Bonus tiles
+            else if (i == 6 || i == 12 || i == 18) MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.Bonus, 50);
             //Property
             else {
-                MainGameData.gameTileMap[i] = new Property(-1, 400, 20);
+                MainGameData.gameTileMap[i] = new Property(-1, 200, 20);
             }
 
             MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject

@@ -81,10 +81,10 @@ public class Player : MonoBehaviour
         return money;
     }
 
-    public void GiveMoney(int sum) {
+    public void IncreaseMoney(int sum) {
         money += sum;
     }
-    public void TakeMoney(int sum) {
+    public void DecreaseMoney(int sum) {
         money -= sum;
     }
 
