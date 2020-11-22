@@ -13,6 +13,7 @@ public class GameData
     public readonly int NUMBER_OF_PLAYERS = 2;
     public readonly int STARTING_AMOUNT_OF_MONEY = 1500;
     public readonly int PROPERTIES_PRICE_AVERAGE = 250;
+    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.3f; //uses as multiplication factor
 
 
 

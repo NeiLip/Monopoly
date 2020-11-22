@@ -6,31 +6,31 @@ using UnityEngine.UI;
 public class GameHandler : MonoBehaviour
 {
 
-    GameData MainGameData;
     public ViewerHandler ViewerHandler;
+    [HideInInspector]
+    public GameData MainGameData;
 
-
-     void Awake() {
+    void Awake() {
         MainGameData = new GameData();
 
         ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
+        ViewerHandler.UpdateDieView(false);
 
-   
+
 
     }
 
 
     public void OnLogWindowButtonClicked() {
         if (MainGameData.state == GameData.State.RollDie) {
+            ViewerHandler.UpdateDieView(true);
             RollTheDie();
             MainGameData.state = GameData.State.Moving;
         }
 
         else { //Playing
-
-
-
+            ViewerHandler.UpdateDieView(false);
             MainGameData.state = GameData.State.RollDie;
             MainGameData.IncreaseWhosTurnIsIt();
             ViewerHandler.UpdateHUD(MainGameData);
@@ -80,10 +80,6 @@ public class GameHandler : MonoBehaviour
 
     }
 
-
-    void PayMoney() {
-    }
-
     void ReachedFinalTile() {
         Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
 
@@ -116,7 +112,6 @@ public class GameHandler : MonoBehaviour
                 ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetFinePrice(), ViewerHandler.LogType.PayTax);
             }
 
-           
             CheckIfGameOver();
         }
 

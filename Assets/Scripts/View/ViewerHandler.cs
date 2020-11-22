@@ -29,6 +29,7 @@ public class ViewerHandler : MonoBehaviour
     public Text MainMenuTitle_Text;
     public Text LogSum_Text; 
     public Text LogTitle_Text;
+    public Text Die_Ready_To_Roll_Text;
 
 
     readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
@@ -68,6 +69,17 @@ public class ViewerHandler : MonoBehaviour
     }
     public void HideWindow(GameObject window) {
         window.SetActive(false);
+    }
+
+    public void UpdateDieView(bool showNumber) {
+        if (showNumber) {
+            CURRENT_DIE.SetActive(true);
+            Die_Ready_To_Roll_Text.gameObject.SetActive(false);
+        }
+        else {
+            CURRENT_DIE.SetActive(false);
+            Die_Ready_To_Roll_Text.gameObject.SetActive(true);
+        }
     }
 
     public void UpdateHUD(GameData MainGameData) {
@@ -182,8 +194,6 @@ public class ViewerHandler : MonoBehaviour
 
 
     public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
-
-
         StartCoroutine(MoveDie(gameHandler, finalNummber));
     }
 
@@ -194,10 +204,10 @@ public class ViewerHandler : MonoBehaviour
 
         while (currentDuration < finalDuration) {
             UpdateCurrentDie(Random.Range(1, 7));
-
             yield return new WaitForSeconds(currentDuration);
-            currentDuration *= 1.3f;
+            currentDuration *= gameHandler.MainGameData.DIE_ROLL_ANIMATION_SPEED;
         }
+
         UpdateCurrentDie(finalNumber);
         yield return new WaitForSeconds(0.5f);
 
