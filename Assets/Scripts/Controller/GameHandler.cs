@@ -21,21 +21,29 @@ public class GameHandler : MonoBehaviour
     }
 
 
-    public void UpdateLogWindow() {
+    public void OnLogWindowButtonClicked() {
         if (MainGameData.state == GameData.State.RollDie) {
             RollTheDie();
             MainGameData.state = GameData.State.Moving;
         }
 
         else { //Playing
-            
+
+
+
             MainGameData.state = GameData.State.RollDie;
             MainGameData.IncreaseWhosTurnIsIt();
             ViewerHandler.UpdateHUD(MainGameData);
+
+
             ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll); //Updates to "Roll the die" title
         }
     }
 
+    void UpdateBankAccounts() {
+
+
+    }
 
     public void RollTheDie() {
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
@@ -69,18 +77,20 @@ public class GameHandler : MonoBehaviour
     }
 
 
+    void BuyProperty() {
+
+    }
+
     void ReachedFinalTile() {
         Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
-
-        Debug.Log("Tile name" + tempTile.GetTileIndex());
 
         if (tempTile.GetType() == typeof(Property)) {
             Property tempProperty = (Property)tempTile;
 
             if (tempProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // This property is already yours
-
+                ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
             }
-            else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for purchase
+            else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for someone to purchase
 
                 //make sure the player has enough money to buy the property
                 if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - tempProperty.GetCostPrice() > 0) { //that means the player can afford buying the property

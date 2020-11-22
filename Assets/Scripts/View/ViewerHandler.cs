@@ -89,7 +89,8 @@ public class ViewerHandler : MonoBehaviour
         BuyProperty,
         PayTax,
         ReceiveBonusMoney,
-        NotEnoghtMoney
+        NotEnoghtMoney,
+        AlreadyBoughtIt
     }
     public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
         switch (type) {
@@ -112,6 +113,10 @@ public class ViewerHandler : MonoBehaviour
             case LogType.NotEnoghtMoney:
                 LogTitle_Text.text = "It costs " + sum +"$. You can not afford it" ;
                 LogSum_Text.text = "Sorry";
+                break;
+            case LogType.AlreadyBoughtIt:
+                LogTitle_Text.text = "This property is already yours!";
+                LogSum_Text.text = "";
                 break;
             default:
                 break;
