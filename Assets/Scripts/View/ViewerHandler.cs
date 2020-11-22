@@ -99,7 +99,7 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "Roll the die";
                 break;
             case LogType.BuyProperty:
-                LogTitle_Text.text = "You landed on a free property and bought it";
+                LogTitle_Text.text = "You landed on a free property";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             case LogType.PayTax:
