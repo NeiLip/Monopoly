@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ViewerHandler : MonoBehaviour
 {
+    public SoundHandler SoundHandler;
 
     [Header("Base Textures")]
     public Sprite[] DIE_SPRITES;
@@ -167,6 +168,7 @@ public class ViewerHandler : MonoBehaviour
     }
 
     public void UpdateCurrentDie(int rolledNumber) {
+        SoundHandler.PlayTick();
         CURRENT_DIE.GetComponent<SpriteRenderer>().sprite = DIE_SPRITES[rolledNumber - 1];
     }
 
@@ -201,13 +203,17 @@ public class ViewerHandler : MonoBehaviour
         float finalDuration = Random.Range(0.8f, 1.2f);
         float currentDuration = Random.Range(0.05f, 0.2f);
 
-
+        int preRolled = finalNumber;
         while (currentDuration < finalDuration) {
-            UpdateCurrentDie(Random.Range(1, 7));
+            int newRolled = Random.Range(1, 7);
+            while (newRolled == preRolled || newRolled == finalNumber) {
+                newRolled = Random.Range(1, 7);
+            }
+            UpdateCurrentDie(newRolled);
+            preRolled = newRolled;
             yield return new WaitForSeconds(currentDuration);
             currentDuration *= gameHandler.MainGameData.DIE_ROLL_ANIMATION_SPEED;
         }
-
         UpdateCurrentDie(finalNumber);
         yield return new WaitForSeconds(0.5f);
 

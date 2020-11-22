@@ -7,6 +7,7 @@ public class GameHandler : MonoBehaviour
 {
 
     public ViewerHandler ViewerHandler;
+    
     [HideInInspector]
     public GameData MainGameData;
 
@@ -16,8 +17,6 @@ public class GameHandler : MonoBehaviour
         ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
         ViewerHandler.UpdateDieView(false);
-
-
 
     }
 
