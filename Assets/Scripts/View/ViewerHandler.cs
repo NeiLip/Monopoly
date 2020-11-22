@@ -9,6 +9,7 @@ public class ViewerHandler : MonoBehaviour
     [Header("Base Textures")]
     public Sprite[] DIE_SPRITES;
     public Sprite[] BASE_PLAYERS_TILES_SPRITES;
+    public Sprite BASE_NEUTRAL_TILE_SPRITE;
     public GameObject[] PLAYERS_PIECES;
     public GameObject BasePlayerHUD;
 
@@ -22,6 +23,10 @@ public class ViewerHandler : MonoBehaviour
 
     [Header("Windows")]
     public GameObject ROLL_THE_DIE_WINDOW;
+    public GameObject MAIN_MENU_WINDOW;
+
+    [Header("Texts")]
+    public Text MainMenuTitle_Text;
 
     private readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
 
@@ -31,7 +36,7 @@ public class ViewerHandler : MonoBehaviour
     /// </summary>
     public void InitPlayersHUD(GameData MainGameData) {
 
-        MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
+       
 
         for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             MainGameData.PlayersHUD[i] = Instantiate(BasePlayerHUD);
@@ -81,7 +86,7 @@ public class ViewerHandler : MonoBehaviour
     /// <param name="newPosition"> The new tile index </param>
     public void PlacePlayerAtPosition(Player player, int newPosition) {
         Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
-        player.GetPlayerPieceGameObjectn().transform.localPosition = tempNewPosition;
+        player.GetPlayerPieceGameObject().transform.localPosition = tempNewPosition;
     }
 
     /// <summary>
@@ -91,7 +96,7 @@ public class ViewerHandler : MonoBehaviour
     /// <param name="newPosition"> The new tile index </param>
     public void MovePlayerToPosition(GameHandler gameHandler,Player player, int newPosition) {
         Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
-        StartCoroutine(MoveplayerOverSeconds(gameHandler, player.GetPlayerPieceGameObjectn(), tempNewPosition));
+        StartCoroutine(MoveplayerOverSeconds(gameHandler, player.GetPlayerPieceGameObject(), tempNewPosition));
 
     }
 

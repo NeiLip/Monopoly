@@ -13,14 +13,16 @@ public class GameHandler : MonoBehaviour
      void Awake() {
         MainGameData = new GameData();
 
+        ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
+        ViewerHandler.HideWindow(ViewerHandler.ROLL_THE_DIE_WINDOW);
 
-        ViewerHandler.InitPlayersHUD(MainGameData);
+   
 
     }
     // Start is called before the first frame update
     void Start()
     {
-        ResetGame();
+     //   ResetGame();
     }
 
 
@@ -101,7 +103,7 @@ public class GameHandler : MonoBehaviour
         }
 
 
-
+        CheckIfGameOver();
 
 
         MainGameData.IncreaseWhosTurnIsIt();
@@ -111,13 +113,44 @@ public class GameHandler : MonoBehaviour
     }
 
 
+    void CheckIfGameOver() {
+        if (MainGameData.players[(MainGameData.whosTurnIsIt)].CheckIfLostGame()) {// enters when player looses the game
+            // Go Back to main menu and change text to player won
+            ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
+            ViewerHandler.MainMenuTitle_Text.text = ((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS).ToString() + "\nYOU WIN!";
+        }
+
+    }
+
 
     public void ResetGame() {
+        
+        ResetGameData();
+        MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
+        ViewerHandler.InitPlayersHUD(MainGameData);
+
+
+        ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);
 
         MapHandlingAtStart();
 
         PlayersHandlingAtStart();
 
+        ViewerHandler.ShowWindow(ViewerHandler.ROLL_THE_DIE_WINDOW);
+    }
+
+    void ResetGameData() {
+        foreach (Player player in MainGameData.players) {
+            Destroy(player.GetPlayerPieceGameObject());
+        }
+
+        foreach (Tile tile in MainGameData.gameTileMap) {
+            tile.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_NEUTRAL_TILE_SPRITE;
+        }
+
+        foreach (GameObject gameObject in MainGameData.PlayersHUD) {
+            Destroy(gameObject);
+        }
 
     }
 
@@ -149,7 +182,7 @@ public class GameHandler : MonoBehaviour
         for (int i = 0; i < MainGameData.players.Length; i++) {
             MainGameData.players[i] = new Player();
             MainGameData.players[i].SetPlayerIndex(i);
-            MainGameData.players[i].SetPlayerPieceGameObjectn(ViewerHandler.PLAYERS_PIECES[i]); //setting player's piece
+            MainGameData.players[i].SetPlayerPieceGameObject(ViewerHandler.PLAYERS_PIECES[i]); //setting player's piece
             MainGameData.players[i].SetCurrentPosition(0);
             MainGameData.players[i].SetMoney(MainGameData.STARTING_AMOUNT_OF_MONEY);
             MainGameData.players[i].SetMovesLeft(0);
@@ -160,6 +193,8 @@ public class GameHandler : MonoBehaviour
 
             ViewerHandler.PlacePlayerAtPosition(MainGameData.players[i], 0);
         }
+
+      
     }
 
 

@@ -6,7 +6,7 @@ public class GameData
 {
 
     public readonly int NUMBER_OF_PLAYERS = 2;
-    public readonly int STARTING_AMOUNT_OF_MONEY = 2500;
+    public readonly int STARTING_AMOUNT_OF_MONEY = 600;
 
    // [HideInInspector]
     public Player[] players;
@@ -18,7 +18,10 @@ public class GameData
     public GameObject[] PlayersHUD;
 
     public GameData() {
-
+        players = new Player[0];
+        gameTileMap = new Tile[0];
+        whosTurnIsIt = 0;
+        PlayersHUD = new GameObject[0];
     }
 
     public void IncreaseWhosTurnIsIt() {

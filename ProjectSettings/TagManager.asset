@@ -50,3 +50,6 @@ TagManager:
   - name: HUD
     uniqueID: 2310148419
     locked: 0
+  - name: MainMenu
+    uniqueID: 248498647
+    locked: 0

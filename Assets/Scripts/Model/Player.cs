@@ -42,11 +42,11 @@ public class Player : MonoBehaviour
     }
 
     //Sets piece game object
-    public void SetPlayerPieceGameObjectn(GameObject gameObject) {
+    public void SetPlayerPieceGameObject(GameObject gameObject) {
         playerPieceGameObject = Instantiate(gameObject); //gameObject;
     }
     //Gets piece game object
-    public GameObject GetPlayerPieceGameObjectn() {
+    public GameObject GetPlayerPieceGameObject() {
         return playerPieceGameObject;
     }
 
