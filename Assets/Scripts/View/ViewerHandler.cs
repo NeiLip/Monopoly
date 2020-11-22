@@ -31,7 +31,7 @@ public class ViewerHandler : MonoBehaviour
     public Text LogTitle_Text;
 
 
-    private readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
+    readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
 
 
     /// <summary>
@@ -150,7 +150,7 @@ public class ViewerHandler : MonoBehaviour
     /// <param name="newPosition"> The new tile index </param>
     public void MovePlayerToPosition(GameHandler gameHandler,Player player, int newPosition) {
         Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
-        StartCoroutine(MoveplayerOverSeconds(gameHandler, player.GetPlayerPieceGameObject(), tempNewPosition));
+        StartCoroutine(MovePlayerOverSeconds(gameHandler, player.GetPlayerPieceGameObject(), tempNewPosition));
 
     }
 
@@ -158,13 +158,13 @@ public class ViewerHandler : MonoBehaviour
         CURRENT_DIE.GetComponent<SpriteRenderer>().sprite = DIE_SPRITES[rolledNumber - 1];
     }
 
-    private IEnumerator MoveplayerOverSeconds(GameHandler gameHandler, GameObject objectToMove, Vector3 endPosition) {
-        float time = .5f;
+    private IEnumerator MovePlayerOverSeconds(GameHandler gameHandler, GameObject objectToMove, Vector3 endPosition) {
+        float duration = .5f;
         float elapsedTime = 0;
         Vector3 startingPos = objectToMove.transform.position;
 
-        while (elapsedTime < time) {
-            objectToMove.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTime / time));
+        while (elapsedTime < duration) {
+            objectToMove.transform.position = Vector3.Lerp(startingPos, endPosition, (elapsedTime / duration));
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -181,7 +181,28 @@ public class ViewerHandler : MonoBehaviour
     }
 
 
+    public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
 
-    
+
+        StartCoroutine(MoveDie(gameHandler, finalNummber));
+    }
+
+    private IEnumerator MoveDie(GameHandler gameHandler, int finalNumber) {
+        float finalDuration = Random.Range(0.8f, 1.2f);
+        float currentDuration = Random.Range(0.05f, 0.2f);
+
+
+        while (currentDuration < finalDuration) {
+            UpdateCurrentDie(Random.Range(1, 7));
+
+            yield return new WaitForSeconds(currentDuration);
+            currentDuration *= 1.3f;
+        }
+        UpdateCurrentDie(finalNumber);
+        yield return new WaitForSeconds(0.5f);
+
+        gameHandler.PlayTurn();
+    }
+
 
 }

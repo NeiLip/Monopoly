@@ -51,11 +51,13 @@ public class GameHandler : MonoBehaviour
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
 
         int tempRoll = Random.Range(1, 7);
-        ViewerHandler.UpdateCurrentDie(tempRoll);
+        //ViewerHandler.UpdateCurrentDie(tempRoll);
+
+        ViewerHandler.RollDieAnimation(this, tempRoll);
 
         MainGameData.players[MainGameData.whosTurnIsIt].SetMovesLeft(tempRoll);
 
-        PlayTurn();
+       // PlayTurn();
 
     }
 
