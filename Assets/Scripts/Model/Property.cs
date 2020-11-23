@@ -34,10 +34,10 @@ public class Property : Tile
         return costPrice;
     }
 
-    public void SetFinePrice(int _finePrice) {
-        taxPrice = _finePrice;
+    public void SetTaxPrice(int _taxPrice) {
+        taxPrice = _taxPrice;
     }
-    public int GetFinePrice() {
+    public int GetTaxPrice() {
         return taxPrice;
     }
 }

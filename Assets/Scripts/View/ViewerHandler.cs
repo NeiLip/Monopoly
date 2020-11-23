@@ -28,6 +28,7 @@ public class ViewerHandler : MonoBehaviour
 
     [Header("Texts")]
     public Text MainMenuTitle_Text;
+    public Text MainMenuSubTitle_Text;
     public Text LogSum_Text; 
     public Text LogTitle_Text;
     public Text Die_Ready_To_Roll_Text;
@@ -35,6 +36,13 @@ public class ViewerHandler : MonoBehaviour
 
     readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
 
+
+    public void OnWakeUp() {
+        MainMenuSubTitle_Text.text = "";
+        ShowWindow(MAIN_MENU_WINDOW);
+        HideWindow(GAME_LOG_WINDOW);
+        UpdateDieView(false);
+    }
 
     /// <summary>
     /// Initiating players HUDs for two players
@@ -103,7 +111,8 @@ public class ViewerHandler : MonoBehaviour
         PayTax,
         ReceiveBonusMoney,
         NotEnoghtMoney,
-        AlreadyBoughtIt
+        AlreadyBoughtIt,
+        Upgrade
     }
     public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
         switch (type) {
@@ -130,6 +139,10 @@ public class ViewerHandler : MonoBehaviour
             case LogType.AlreadyBoughtIt:
                 LogTitle_Text.text = "This property is already yours!";
                 LogSum_Text.text = "";
+                break;
+            case LogType.Upgrade:
+                LogTitle_Text.text = "You can for an upgrade. Tax increased!";
+                LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             default:
                 break;
@@ -173,7 +186,7 @@ public class ViewerHandler : MonoBehaviour
     }
 
     private IEnumerator MovePlayerOverSeconds(GameHandler gameHandler, GameObject objectToMove, Vector3 endPosition) {
-        float duration = .5f;
+        float duration = gameHandler.MainGameData.PLAYER_MOVEMENT_DURATION;
         float elapsedTime = 0;
         Vector3 startingPos = objectToMove.transform.position;
 
@@ -190,7 +203,8 @@ public class ViewerHandler : MonoBehaviour
 
     public void GameOver(GameData MainGameData) {
         int winningPlayer = ((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1;
-        MainMenuTitle_Text.text = "Player " + winningPlayer + "\nYOU WIN!";
+        MainMenuTitle_Text.text = "Player " + winningPlayer + " you WIN!";
+        MainMenuSubTitle_Text.text = MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GetMoney() + "$ left";
         ShowWindow(MAIN_MENU_WINDOW);
     }
 

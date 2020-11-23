@@ -14,9 +14,7 @@ public class GameHandler : MonoBehaviour
     void Awake() {
         MainGameData = new GameData();
 
-        ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
-        ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
-        ViewerHandler.UpdateDieView(false);
+        ViewerHandler.OnWakeUp();
 
     }
 
@@ -83,32 +81,50 @@ public class GameHandler : MonoBehaviour
         Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
 
         if (tempTile.GetType() == typeof(Property)) {
-            Property tempProperty = (Property)tempTile;
+            Property currentProperty = (Property)tempTile;
 
-            if (tempProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // This property is already yours
-                ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
+            if (currentProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // This property is already yours
+
+                if (MainGameData.gameType == GameData.GameType.Upgrades) {//if Game is with upgrades
+                    int upgradeCost = (int)(currentProperty.GetCostPrice() * MainGameData.UPGRADE_COST_RATIO);
+                    if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - upgradeCost > 0) {
+                        MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(upgradeCost);
+                        UpgradeProperty(currentProperty);
+                        ViewerHandler.UpdateLogWindow(MainGameData, upgradeCost, ViewerHandler.LogType.Upgrade);
+                    }
+                    else {
+                         ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
+                    }
+                }
+
+                else {//classic game
+                    ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
+                }
+
+              
+               
             }
-            else if (tempProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for someone to purchase
+            else if (currentProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for someone to purchase
 
                 //make sure the player has enough money to buy the property
-                if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - tempProperty.GetCostPrice() > 0) { //that means the player can afford buying the property
-                    MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(tempProperty.GetCostPrice());
-                    tempProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
-                    tempProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
+                if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice() > 0) { //that means the player can afford buying the property
+                    MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(currentProperty.GetCostPrice());
+                    currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
+                    currentProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
 
-                    ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);
+                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);
                 }
                 else {
-                    ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetCostPrice(), ViewerHandler.LogType.NotEnoghtMoney);
+                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.NotEnoghtMoney);
                 }
 
           
             }
             else { //Other player already purchased this property
-                MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
-                MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].IncreaseMoney(tempProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
+                MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(currentProperty.GetTaxPrice());//Takes money from the player and gives it to the player owning this property
+                MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].IncreaseMoney(currentProperty.GetTaxPrice());//Takes money from the player and gives it to the player owning this property
 
-                ViewerHandler.UpdateLogWindow(MainGameData, tempProperty.GetFinePrice(), ViewerHandler.LogType.PayTax);
+                ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetTaxPrice(), ViewerHandler.LogType.PayTax);
             }
 
             CheckIfGameOver();
@@ -179,10 +195,10 @@ public class GameHandler : MonoBehaviour
         for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {
             //Always the starting point
             if (i == 0) {
-                MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.StartingPoint, 200);
+                MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.StartingPoint, MainGameData.STARTING_POINT_REWARD_VALUE);
             }
             //Bonus tiles
-            else if (i == 6 || i == 12 || i == 18) MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.Bonus, 50);
+            else if (i == 6 || i == 12 || i == 18) MainGameData.gameTileMap[i] = new SpecialTile(SpecialTile.TileType.Bonus, MainGameData.BASE_REWARD);
             //Property
             else {
                 //MainGameData.gameTileMap[i] = new Property();
@@ -220,7 +236,9 @@ public class GameHandler : MonoBehaviour
       
     }
 
-
+    void UpgradeProperty(Property property) {
+        property.SetTaxPrice((int)(property.GetTaxPrice() * MainGameData.TAX_AFTER_UPGRADE_RATIO));
+    }
 
 
 }
