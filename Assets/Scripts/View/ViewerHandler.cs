@@ -38,7 +38,7 @@ public class ViewerHandler : MonoBehaviour
     public Text Die_Ready_To_Roll_Text;
 
 
-    readonly Vector3[] playersPositionWithinATile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};// the position in a tile of both players (so they won't cover each other)
+    readonly Vector3[] playersPositionWithinATile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};// the players' pieces position within a tile (so they won't cover each other)
 
     //Called from game handler only once on awake 
     public void OnWakeUp() {
@@ -305,7 +305,7 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "";
                 break;
             case LogType.Upgrade:
-                LogTitle_Text.text = "You can upgrade this property. Tax increased!";
+                LogTitle_Text.text = "Property is available for upgrade. Tax increased!";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             default:
