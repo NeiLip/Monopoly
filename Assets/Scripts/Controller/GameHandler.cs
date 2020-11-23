@@ -27,15 +27,15 @@ public class GameHandler : MonoBehaviour
         }
 
         else { //Playing
+            ViewerHandler.UpdateProperty(MainGameData);
+
             ViewerHandler.UpdateDieView(false);
             MainGameData.state = GameData.State.RollDie;
             MainGameData.IncreaseWhosTurnIsIt();
-            //ViewerHandler.UpdateHUD(MainGameData);
            
-
-
             ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll); //Updates to "Roll the die" title
 
+       
             ViewerHandler.UpdateHUD(MainGameData);
            
         }
@@ -102,12 +102,11 @@ public class GameHandler : MonoBehaviour
               
                
             }
-            else if (currentProperty.GetOwnedByPlayerIndex() == -1) { //This property is waiting for someone to purchase
-
+            else if (currentProperty.GetOwnedByPlayerIndex() == -1) { //This property is free
                 //make sure the player has enough money to buy the property
                 if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice() > 0) { //that means the player can afford buying the property
                     MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(currentProperty.GetCostPrice());
-                    currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
+                  //  currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
                     currentProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
 
                     ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);

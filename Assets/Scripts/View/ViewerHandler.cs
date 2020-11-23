@@ -96,14 +96,24 @@ public class ViewerHandler : MonoBehaviour
             else
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
 
-          //  string temp = string.Format("{0:n0}", 9876);
-            MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = MainGameData.players[i].GetMoney().ToString() + "$";
+           // string withCommas = string.Format("{0:n0}", MainGameData.players[i].GetMoney());
+            MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = AddCommasToNumber(MainGameData.players[i].GetMoney()) + "$";
         }
 
         if (MainGameData.gameType == GameData.GameType.Upgrades) { //If it's a game with upgrades, means that taxes may change
             UpdateTilesTax(MainGameData);
         }
        
+    }
+
+    public void UpdateProperty(GameData MainGameData) {
+        Tile temp = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
+        if (temp.GetType() == typeof(Property)) {
+            Property currentProperty = (Property)temp;
+            if (currentProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // Makes sure the player owns the property
+                currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
+            }
+        }
     }
 
 
@@ -144,7 +154,7 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "";
                 break;
             case LogType.Upgrade:
-                LogTitle_Text.text = "You can for an upgrade. Tax increased!";
+                LogTitle_Text.text = "You can upgrade this property. Tax increased!";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             default:
@@ -218,10 +228,14 @@ public class ViewerHandler : MonoBehaviour
     public void GameOver(GameData MainGameData) {
         int winningPlayer = ((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1;
         MainMenuTitle_Text.text = "Player " + winningPlayer + " you WIN!";
-        MainMenuSubTitle_Text.text = MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GetMoney() + "$ left";
+        MainMenuSubTitle_Text.text =  AddCommasToNumber(MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GetMoney())
+            + "$ left"; //Gets winner's amount of money left and add commas
         ShowWindow(MAIN_MENU_WINDOW);
     }
 
+    string AddCommasToNumber(int number) {
+        return string.Format("{0:n0}", number);
+    }
 
     public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
         StartCoroutine(ChangeDieFace(gameHandler, finalNummber));
