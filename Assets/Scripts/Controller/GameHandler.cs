@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Links between the data from GameData to the viewer handler. Most calculations are made whitin this script
+//Links between the data from GameData to the viewer handler. Most calculations are made within this script
 public class GameHandler : MonoBehaviour
 {
     public ViewerHandler ViewerHandler; //Viewer Reference
