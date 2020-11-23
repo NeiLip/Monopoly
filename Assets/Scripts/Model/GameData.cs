@@ -20,8 +20,8 @@ public class GameData
     public readonly int BASE_REWARD = 50;
     public readonly int STARTING_POINT_REWARD_VALUE = 200;
 
-    public readonly float PLAYER_MOVEMENT_DURATION = .2f; //Time in seconds to move from tile to tile
-    public readonly float DIE_ROLL_ANIMATION_SPEED = 2f; //uses as multiplication factor
+    public readonly float PLAYER_MOVEMENT_DURATION = .3f; //Time in seconds to move from tile to tile
+    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.3f; //uses as multiplication factor
 
     public readonly float MONEY_ANIMATION_SPEED = .3f;//Total time of the animation
 

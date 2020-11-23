@@ -27,6 +27,7 @@ public class ViewerHandler : MonoBehaviour
     [Header("Windows")]
     public GameObject GAME_LOG_WINDOW;
     public GameObject MAIN_MENU_WINDOW;
+    public GameObject HOW_TO_PLAY_WINDOW;
 
     [Header("Texts")]
     public Text MainMenuTitle_Text;
@@ -43,6 +44,7 @@ public class ViewerHandler : MonoBehaviour
         MainMenuSubTitle_Text.text = "";
         ShowWindow(MAIN_MENU_WINDOW);
         HideWindow(GAME_LOG_WINDOW);
+        HideWindow(HOW_TO_PLAY_WINDOW);
         UpdateDieView(false);
     }
 
@@ -288,6 +290,7 @@ public class ViewerHandler : MonoBehaviour
         float elapsedTime = 0;
 
         while (elapsedTime < duration) {
+            SoundHandler.PlaySnatch();
             currentText.text = AddCommasToNumber((int)Mathf.Lerp(moneyAtBeginOfTurn, finalAmount, (elapsedTime / duration))) + "$";
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();

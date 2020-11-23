@@ -237,4 +237,14 @@ public class GameHandler : MonoBehaviour
     }
 
 
+    public void ToggleMenuAndHowToPlayWindows(bool openHowToPlay) {
+        if (openHowToPlay) {
+            ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);
+            ViewerHandler.ShowWindow(ViewerHandler.HOW_TO_PLAY_WINDOW);
+        }
+        else {
+            ViewerHandler.HideWindow(ViewerHandler.HOW_TO_PLAY_WINDOW);
+            ViewerHandler.ShowWindow(ViewerHandler.MAIN_MENU_WINDOW);
+        }
+    }
 }
