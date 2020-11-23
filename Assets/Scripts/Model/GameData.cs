@@ -21,11 +21,11 @@ public class GameData
     public readonly int STARTING_POINT_REWARD_VALUE = 200;
 
     public readonly float PLAYER_MOVEMENT_DURATION = .2f; //Time in seconds to move from tile to tile
-    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.5f; //uses as multiplication factor
+    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.7f; //uses as multiplication factor
 
     public readonly float TAX_COST_RATIO = .1f;
 
-    public readonly float TAX_AFTER_UPGRADE_RATIO = 1.1f; //The new tax
+    public readonly float TAX_AFTER_UPGRADE_RATIO = 1.6f; //The new tax
     public readonly float UPGRADE_COST_RATIO = .06f; //The cost for upgrading a property. 
 
 
@@ -38,7 +38,7 @@ public class GameData
     public GameObject[] PlayersHUD;
 
     public State state;
-    public GameType gameType = GameType.Upgrades;
+    public GameType gameType = GameType.Classic;
 
     public Property[] PRE_MADE_PROPERTIES;
 

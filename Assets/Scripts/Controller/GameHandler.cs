@@ -30,19 +30,17 @@ public class GameHandler : MonoBehaviour
             ViewerHandler.UpdateDieView(false);
             MainGameData.state = GameData.State.RollDie;
             MainGameData.IncreaseWhosTurnIsIt();
-            ViewerHandler.UpdateHUD(MainGameData);
+            //ViewerHandler.UpdateHUD(MainGameData);
+           
 
 
             ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll); //Updates to "Roll the die" title
 
             ViewerHandler.UpdateHUD(MainGameData);
+           
         }
     }
 
-    void UpdateBankAccounts() {
-
-
-    }
 
     public void RollTheDie() {
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);

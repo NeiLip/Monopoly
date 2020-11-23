@@ -48,9 +48,6 @@ public class ViewerHandler : MonoBehaviour
     /// Initiating players HUDs for two players
     /// </summary>
     public void InitPlayersHUD(GameData MainGameData) {
-
-       
-
         for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             MainGameData.PlayersHUD[i] = Instantiate(BasePlayerHUD);
             MainGameData.PlayersHUD[i].transform.SetParent(HUD_Canvas.transform);
@@ -99,8 +96,14 @@ public class ViewerHandler : MonoBehaviour
             else
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
 
-            MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = MainGameData.players[i].GetMoney().ToString();
+          //  string temp = string.Format("{0:n0}", 9876);
+            MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = MainGameData.players[i].GetMoney().ToString() + "$";
         }
+
+        if (MainGameData.gameType == GameData.GameType.Upgrades) { //If it's a game with upgrades, means that taxes may change
+            UpdateTilesTax(MainGameData);
+        }
+       
     }
 
 
@@ -152,11 +155,22 @@ public class ViewerHandler : MonoBehaviour
 
     public void InitTilesCosts(GameData MainGameData) {
         for (int i = 0; i < TILE_MAP.Length; i++) {
-            if (TILE_MAP[i].transform.Find("Cost_Text") != null) {
+            if (TILE_MAP[i].transform.Find("TileTexts/Cost_Text") != null) {
                 Property temp = (Property)MainGameData.gameTileMap[i];
-                TILE_MAP[i].transform.Find("Cost_Text").GetComponent<Text>().text = temp.GetCostPrice() + "$";
+                TILE_MAP[i].transform.Find("TileTexts/Cost_Text").GetComponent<Text>().text = temp.GetCostPrice() + "$";
             }
         }
+        UpdateTilesTax(MainGameData);
+    }
+
+    public void UpdateTilesTax(GameData MainGameData) {
+        for (int i = 0; i < TILE_MAP.Length; i++) {
+            if (TILE_MAP[i].transform.Find("TileTexts/Tax_Text") != null) {
+                Property temp = (Property)MainGameData.gameTileMap[i];
+                TILE_MAP[i].transform.Find("TileTexts/Tax_Text").GetComponent<Text>().text = temp.GetTaxPrice() + "$";
+            }
+        }
+
     }
 
     /// <summary>
@@ -210,10 +224,10 @@ public class ViewerHandler : MonoBehaviour
 
 
     public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
-        StartCoroutine(MoveDie(gameHandler, finalNummber));
+        StartCoroutine(ChangeDieFace(gameHandler, finalNummber));
     }
 
-    private IEnumerator MoveDie(GameHandler gameHandler, int finalNumber) {
+    private IEnumerator ChangeDieFace(GameHandler gameHandler, int finalNumber) {
         float finalDuration = Random.Range(0.8f, 1.2f);
         float currentDuration = Random.Range(0.05f, 0.2f);
 
