@@ -23,13 +23,12 @@ public class GameHandler : MonoBehaviour
             RollTheDie();
             MainGameData.state = GameData.State.Moving;
         }
-
         else { //Means we finished moving
             ViewerHandler.ChangeAmountOfMoneyAnimation(this, MainGameData.MoneyAtStartOfTurn);
         }
     }
 
-    //Called before the die is rolled
+    //Roll a random number from 1 to 6 (inclusive), call RollDieAnimation to animate it, and setting it as player's moves left
     public void RollTheDie() {
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
         int tempRoll = Random.Range(1, 7);
@@ -39,13 +38,13 @@ public class GameHandler : MonoBehaviour
     }
 
 
-    //Checks if players has to move one more tile or it reaced its destination tile
+    //Checks if the current player have moves left or he reached destination
     public void ContinueTurn() {
-        if(MainGameData.players[MainGameData.whosTurnIsIt].GetMovesLeft() <= 0) {
+        if(MainGameData.players[MainGameData.whosTurnIsIt].GetMovesLeft() <= 0) {//reached destination
             ReachedFinalTile();
             return;
         }
-        else {
+        else {//still have moves left
             MainGameData.players[MainGameData.whosTurnIsIt].SetCurrentPosition((MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
 
             ViewerHandler.MovePlayerToPosition(this, MainGameData.players[MainGameData.whosTurnIsIt], MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition());
@@ -55,7 +54,7 @@ public class GameHandler : MonoBehaviour
 
     /// IMPORTANT FUNCTION
     /// Called when the player finished moving.
-    /// We check what is the type of the destination tile and acts accordingly.
+    /// We check what is the type of the destination tile and act accordingly.
     /// In addition, if we reached a property tile, we also need to check who owns it and act accordingly
     void ReachedFinalTile() {
         Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
@@ -95,10 +94,10 @@ public class GameHandler : MonoBehaviour
                 }
             }
             else { //Other player already purchased this property
-                MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(currentProperty.GetTaxPrice());//Takes money from the player and gives it to the player owning this property
-                MainGameData.players[MainGameData.nextPlayer].IncreaseMoney(currentProperty.GetTaxPrice());//Takes money from the player and gives it to the player owning this property
+                MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(currentProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
+                MainGameData.players[MainGameData.nextPlayer].IncreaseMoney(currentProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
 
-                ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetTaxPrice(), ViewerHandler.LogType.PayTax);
+                ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetFinePrice(), ViewerHandler.LogType.PayFine);
             }
 
             CheckIfGameOver();//Every time a turn is finished, we check if the player lost (i.e have 0 or less money)
@@ -115,7 +114,6 @@ public class GameHandler : MonoBehaviour
        // ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
     }
-
 
     void CheckIfGameOver() {
         if (MainGameData.players[MainGameData.whosTurnIsIt].CheckIfLostGame()) {// enters when player looses the game
@@ -204,7 +202,7 @@ public class GameHandler : MonoBehaviour
 
     //Called when a player is upgrading his property
     void UpgradeProperty(Property property) {
-        property.SetTaxPrice((int)(property.GetTaxPrice() * MainGameData.TAX_AFTER_UPGRADE_RATIO));
+        property.SetFinePrice((int)(property.GetFinePrice() * MainGameData.FINE_AFTER_UPGRADE_RATIO));
     }
 
     //Toggles menu-window/how-to-play-window accordingly

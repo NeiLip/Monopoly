@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class SoundHandler : MonoBehaviour
 {
-    public AudioSource TickAudio;
-    public AudioSource SnatchSound;
-    public AudioSource ButtonClickSound;
+    public AudioSource TickAudio;//Called when animating a die roll
+    public AudioSource SnatchSound;//Called when animating money changes
+
+    public AudioSource ButtonClickSound;//Called when clicking buttons in menu
 
 
     public void PlayTick() {

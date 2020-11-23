@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 28867590}
   - component: {fileID: 28867589}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -983,7 +983,7 @@ GameObject:
   - component: {fileID: 102580815}
   - component: {fileID: 102580814}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1039,7 +1039,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &102580815
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1060,7 +1060,7 @@ GameObject:
   - component: {fileID: 103040076}
   - component: {fileID: 103040075}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1607,7 +1607,7 @@ GameObject:
   - component: {fileID: 220893245}
   - component: {fileID: 220893244}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1750,7 +1750,7 @@ GameObject:
   - component: {fileID: 225855961}
   - component: {fileID: 225855960}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1806,7 +1806,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &225855961
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1827,7 +1827,7 @@ GameObject:
   - component: {fileID: 232699107}
   - component: {fileID: 232699106}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1883,7 +1883,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &232699107
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2627,7 +2627,7 @@ GameObject:
   - component: {fileID: 356610946}
   - component: {fileID: 356610945}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3022,7 +3022,7 @@ GameObject:
   - component: {fileID: 458246658}
   - component: {fileID: 458246657}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3078,7 +3078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &458246658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3099,7 +3099,7 @@ GameObject:
   - component: {fileID: 460631524}
   - component: {fileID: 460631523}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3176,7 +3176,7 @@ GameObject:
   - component: {fileID: 476010328}
   - component: {fileID: 476010327}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3253,7 +3253,7 @@ GameObject:
   - component: {fileID: 502846121}
   - component: {fileID: 502846120}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3309,7 +3309,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &502846121
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3484,7 +3484,7 @@ GameObject:
   - component: {fileID: 556936331}
   - component: {fileID: 556936330}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3540,7 +3540,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &556936331
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3561,7 +3561,7 @@ GameObject:
   - component: {fileID: 571158224}
   - component: {fileID: 571158223}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4062,7 +4062,7 @@ GameObject:
   - component: {fileID: 616338250}
   - component: {fileID: 616338249}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4358,7 +4358,7 @@ GameObject:
   - component: {fileID: 670389302}
   - component: {fileID: 670389301}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4593,7 +4593,7 @@ GameObject:
   - component: {fileID: 680293119}
   - component: {fileID: 680293118}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4751,7 +4751,7 @@ GameObject:
   - component: {fileID: 687592698}
   - component: {fileID: 687592697}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4807,7 +4807,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &687592698
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5548,7 +5548,7 @@ GameObject:
   - component: {fileID: 872114978}
   - component: {fileID: 872114977}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5604,7 +5604,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &872114978
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5707,7 +5707,7 @@ GameObject:
   - component: {fileID: 887758220}
   - component: {fileID: 887758219}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5763,7 +5763,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &887758220
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5784,7 +5784,7 @@ GameObject:
   - component: {fileID: 904827049}
   - component: {fileID: 904827048}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6164,7 +6164,7 @@ GameObject:
   - component: {fileID: 962944807}
   - component: {fileID: 962944806}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6220,7 +6220,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &962944807
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6405,7 +6405,7 @@ GameObject:
   - component: {fileID: 989075156}
   - component: {fileID: 989075155}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6461,7 +6461,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &989075156
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6482,7 +6482,7 @@ GameObject:
   - component: {fileID: 994335139}
   - component: {fileID: 994335138}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6538,7 +6538,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &994335139
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6758,7 +6758,7 @@ GameObject:
   - component: {fileID: 1027853418}
   - component: {fileID: 1027853417}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6948,7 +6948,7 @@ GameObject:
   - component: {fileID: 1095470484}
   - component: {fileID: 1095470483}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7004,7 +7004,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1095470484
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12111,7 +12111,7 @@ GameObject:
   - component: {fileID: 1171311665}
   - component: {fileID: 1171311664}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12167,7 +12167,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1171311665
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12265,7 +12265,7 @@ GameObject:
   - component: {fileID: 1232993197}
   - component: {fileID: 1232993196}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12321,7 +12321,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1232993197
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13185,7 +13185,7 @@ GameObject:
   - component: {fileID: 1370530895}
   - component: {fileID: 1370530894}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13296,7 +13296,7 @@ GameObject:
   - component: {fileID: 1387091238}
   - component: {fileID: 1387091237}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13352,7 +13352,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1387091238
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14283,7 +14283,7 @@ GameObject:
   - component: {fileID: 1603356135}
   - component: {fileID: 1603356134}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14339,7 +14339,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1603356135
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14510,7 +14510,7 @@ GameObject:
   - component: {fileID: 1633010024}
   - component: {fileID: 1633010023}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14566,7 +14566,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1633010024
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14991,7 +14991,7 @@ GameObject:
   - component: {fileID: 1699398234}
   - component: {fileID: 1699398233}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15150,7 +15150,7 @@ GameObject:
   - component: {fileID: 1720208282}
   - component: {fileID: 1720208281}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15542,7 +15542,7 @@ GameObject:
   - component: {fileID: 1815352276}
   - component: {fileID: 1815352275}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15653,7 +15653,7 @@ GameObject:
   - component: {fileID: 1829297669}
   - component: {fileID: 1829297668}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15980,7 +15980,7 @@ GameObject:
   - component: {fileID: 1850263170}
   - component: {fileID: 1850263169}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16134,7 +16134,7 @@ GameObject:
   - component: {fileID: 1865194983}
   - component: {fileID: 1865194982}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16190,7 +16190,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1865194983
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16370,7 +16370,7 @@ GameObject:
   - component: {fileID: 1961186196}
   - component: {fileID: 1961186195}
   m_Layer: 0
-  m_Name: TaxTitle_Text
+  m_Name: FineTitle_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16426,7 +16426,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Tax:'
+  m_Text: 'Fine:'
 --- !u!222 &1961186196
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16722,7 +16722,7 @@ GameObject:
   - component: {fileID: 2060242806}
   - component: {fileID: 2060242805}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16876,7 +16876,7 @@ GameObject:
   - component: {fileID: 2079848635}
   - component: {fileID: 2079848634}
   m_Layer: 0
-  m_Name: Tax_Text
+  m_Name: Fine_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

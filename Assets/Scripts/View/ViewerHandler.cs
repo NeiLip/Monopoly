@@ -117,8 +117,8 @@ public class ViewerHandler : MonoBehaviour
             MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = AddCommasToNumber(MainGameData.players[i].GetMoney()) + "$";
         }
 
-        if (MainGameData.gameType == GameData.GameType.Upgrades) { //If it's a game with upgrades, means that taxes may change
-            UpdateTilesTax(MainGameData);
+        if (MainGameData.gameType == GameData.GameType.Upgrades) { //If it's a game with upgrades, means that fines may change
+            UpdateTilesFines(MainGameData);
         }
     }
 
@@ -141,16 +141,16 @@ public class ViewerHandler : MonoBehaviour
                 TILE_MAP[i].transform.Find("TileTexts/Cost_Text").GetComponent<Text>().text = temp.GetCostPrice() + "$";
             }
         }
-        UpdateTilesTax(MainGameData);
+        UpdateTilesFines(MainGameData);
     }
-    //Initializes tiles taxes.
+    //Initializes tiles fines.
     //In classic games- called only once at the beginning
     //Called only during games with upgrades.
-    public void UpdateTilesTax(GameData MainGameData) {
+    public void UpdateTilesFines(GameData MainGameData) {
         for (int i = 0; i < TILE_MAP.Length; i++) {
-            if (TILE_MAP[i].transform.Find("TileTexts/Tax_Text") != null) {
+            if (TILE_MAP[i].transform.Find("TileTexts/Fine_Text") != null) {
                 Property temp = (Property)MainGameData.gameTileMap[i];
-                TILE_MAP[i].transform.Find("TileTexts/Tax_Text").GetComponent<Text>().text = temp.GetTaxPrice() + "$";
+                TILE_MAP[i].transform.Find("TileTexts/Fine_Text").GetComponent<Text>().text = temp.GetFinePrice() + "$";
             }
         }
 
@@ -206,25 +206,25 @@ public class ViewerHandler : MonoBehaviour
     public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
         StartCoroutine(ChangeDieFace(gameHandler, finalNummber));
     }
-
     private IEnumerator ChangeDieFace(GameHandler gameHandler, int finalNumber) {
-        float finalDuration = Random.Range(0.8f, 1.2f);
-        float currentDuration = Random.Range(0.05f, 0.2f);
+        float finalDuration = Random.Range(0.8f, 1.2f);//Use random so every die roll would feel different
+        float currentDuration = Random.Range(0.05f, 0.2f);//Use random so every die roll would feel different
 
         int preRolled = finalNumber;
-        while (currentDuration < finalDuration) {
+        while (currentDuration < finalDuration) {//When current duration goes beyond final duration, stop animation
             int newRolled = Random.Range(1, 7);
             while (newRolled == preRolled || newRolled == finalNumber) { //Just make sure the next random number is not the same as the previous. Otherwise it looks wierd..
                 newRolled = Random.Range(1, 7);
             }
             UpdateCurrentDie(newRolled);
+
             preRolled = newRolled;
             yield return new WaitForSeconds(currentDuration);
             currentDuration *= gameHandler.MainGameData.DIE_ROLL_ANIMATION_SPEED;
         }
+
         UpdateCurrentDie(finalNumber);
         yield return new WaitForSeconds(0.5f);
-
         gameHandler.ContinueTurn();//Finished rolling dice, contine turn
     }
 
@@ -233,7 +233,6 @@ public class ViewerHandler : MonoBehaviour
         HideWindow(GAME_LOG_WINDOW);
         StartCoroutine(ChangeAmountOfMoneyAnimationCoroutine(gameHandler, moneyAtBeginOfTurn));
     }
-
     private IEnumerator ChangeAmountOfMoneyAnimationCoroutine(GameHandler gameHandler, int moneyAtBeginOfTurn) {
         int finalAmount = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney();//Get player's current amount of money (i.e after the player paid/received money)
         Text currentText = gameHandler.MainGameData.PlayersHUD[gameHandler.MainGameData.whosTurnIsIt].transform.Find("PlayerMoney_Text").GetComponent<Text>(); //Current player's PlayerMoney_Text
@@ -247,31 +246,28 @@ public class ViewerHandler : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-
         UpdateAfterMoneyAnimation(gameHandler.MainGameData);
     }
 
     //Updates relevant windows according money changes.
     void UpdateAfterMoneyAnimation(GameData MainGameData) {
         UpdatePropertySprite(MainGameData);
-
         UpdateDieView(false);
+
         MainGameData.state = GameData.State.RollDie;
         MainGameData.IncreaseWhosTurnIsIt();
 
         UpdateLogWindow(MainGameData, -1, LogType.Roll); //Updates to "Roll the die" title
-
         UpdateHUD(MainGameData);
         ShowWindow(GAME_LOG_WINDOW);
     }
-
 
 
     //Different log types
     public enum LogType {
         Roll,
         BuyProperty,
-        PayTax,
+        PayFine,
         ReceiveBonusMoney,
         NotEnoghtMoney,
         AlreadyBoughtIt,
@@ -288,7 +284,7 @@ public class ViewerHandler : MonoBehaviour
                 LogTitle_Text.text = "You landed on a free property";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
-            case LogType.PayTax:
+            case LogType.PayFine:
                 LogTitle_Text.text = "You landed on Player " + (MainGameData.nextPlayer + 1) + "'s property";
                 LogSum_Text.text = "Lose " + sum.ToString() + "$";
                 break;
@@ -305,12 +301,11 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "";
                 break;
             case LogType.Upgrade:
-                LogTitle_Text.text = "Property is available for upgrade. Tax increased!";
+                LogTitle_Text.text = "Property is available for upgrade. Fine increased!";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             default:
                 break;
         }
     }
-
 }

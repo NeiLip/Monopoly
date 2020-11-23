@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//A basic tile object
 public class Tile
 {
     GameObject tileGameObject;
     int tileIndex;
-
 
     //Default constructor
     public Tile() {

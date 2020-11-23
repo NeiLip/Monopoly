@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-// Contains all relevant data
+//Contains all relevant data and stats for a specific game. 
 public class GameData
 {
     public enum State {
@@ -25,8 +25,8 @@ public class GameData
     public readonly int BASE_REWARD = 50;
     public readonly int STARTING_POINT_REWARD_VALUE = 200;//How much get from landing on starting point
 
-    public readonly float TAX_COST_RATIO = .1f; //Base tax = TAX_COST_RATIO * property_price
-    public readonly float TAX_AFTER_UPGRADE_RATIO = 1.6f; //The new tax = TAX_AFTER_UPGRADE_RATIO * current_tax
+    public readonly float FINE_COST_RATIO = .1f; //Base fine = FINE_COST_RATIO * property_price
+    public readonly float FINE_AFTER_UPGRADE_RATIO = 1.6f; //The new fine = FINE_AFTER_UPGRADE_RATIO * current_fine
     public readonly float UPGRADE_COST_RATIO = .06f; //The cost for upgrading a property = UPGRADE_COST_RATIO * property_price
 
     //Animations info
@@ -74,7 +74,7 @@ public class GameData
     }
 
 
-    //Insert property price and tax price for eact property
+    //Insert property price and fine price for eact property
     void InsertPricesToProperties() {
         PRE_MADE_PROPERTIES = new Property[20];//we know the actual map and each game the map stays the same. So I allowed myself use an actual number
 
@@ -87,7 +87,7 @@ public class GameData
         int currentPrice = minPrice;
         
         for (int i = 0; i < PRE_MADE_PROPERTIES.Length; i++) {
-            PRE_MADE_PROPERTIES[i] = new Property(-1, currentPrice, (int)(currentPrice * TAX_COST_RATIO));
+            PRE_MADE_PROPERTIES[i] = new Property(-1, currentPrice, (int)(currentPrice * FINE_COST_RATIO));
             currentPrice += increment;
         }
     }
