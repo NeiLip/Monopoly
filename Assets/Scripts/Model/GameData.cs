@@ -21,7 +21,7 @@ public class GameData
     public readonly int STARTING_POINT_REWARD_VALUE = 200;
 
     public readonly float PLAYER_MOVEMENT_DURATION = .2f; //Time in seconds to move from tile to tile
-    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.7f; //uses as multiplication factor
+    public readonly float DIE_ROLL_ANIMATION_SPEED = 2f; //uses as multiplication factor
 
     public readonly float MONEY_ANIMATION_SPEED = .3f;//Total time of the animation
 
@@ -46,7 +46,7 @@ public class GameData
     public GameObject[] PlayersHUD;
 
     public State state;
-    public GameType gameType = GameType.Classic;
+    public GameType gameType = GameType.Upgrades; //Determine the game type (Current options are Classic and Upgrades)
 
     public Property[] PRE_MADE_PROPERTIES;
 

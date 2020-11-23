@@ -147,8 +147,12 @@ public class GameHandler : MonoBehaviour
 
 
     public void ResetGame() {
-        
         ResetGameData();
+
+        //Check if classic game or game with upgrades. If enabled than it is a game with upgrades
+        if (ViewerHandler.gameTypeToggle.isOn) MainGameData.gameType = GameData.GameType.Upgrades;
+        else MainGameData.gameType = GameData.GameType.Classic;
+
         MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
         ViewerHandler.InitPlayersHUD(MainGameData);
 

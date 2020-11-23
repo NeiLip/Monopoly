@@ -18,6 +18,8 @@ public class ViewerHandler : MonoBehaviour
     public GameObject HUD_Canvas;
     public GameObject DIE_BACKGROUND;
     public GameObject CURRENT_DIE;
+    public Toggle gameTypeToggle;
+    public ParticleSystem ON_WIN_PARTICLE_SYSTEM;
 
     [Header("Tile Map")]
     public GameObject[] TILE_MAP;
@@ -231,6 +233,8 @@ public class ViewerHandler : MonoBehaviour
         MainMenuSubTitle_Text.text =  AddCommasToNumber(MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GetMoney())
             + "$ left"; //Gets winner's amount of money left and add commas
         ShowWindow(MAIN_MENU_WINDOW);
+        ON_WIN_PARTICLE_SYSTEM.time = 0;
+        ON_WIN_PARTICLE_SYSTEM.Play();
     }
 
     string AddCommasToNumber(int number) {
