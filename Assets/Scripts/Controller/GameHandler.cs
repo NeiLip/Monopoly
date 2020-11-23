@@ -3,81 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Links between the data from GameData to the viewer handler. Most calculations are made whitin this script
 public class GameHandler : MonoBehaviour
 {
-
-    public ViewerHandler ViewerHandler;
-    
+    public ViewerHandler ViewerHandler; //Viewer Reference
     [HideInInspector]
-    public GameData MainGameData;
+    public GameData MainGameData;// Game data reference
 
-    private int MoneyAtStartOfTurn = 0; //always be 2 even if we have more than 2 players beacuse it is used only to transfer money from one player to other
-
+    //Called only once at awake
     void Awake() {
         MainGameData = new GameData();
-
         ViewerHandler.OnWakeUp();
-
     }
 
-
- 
+    //Called when log menu button is clicked 
     public void OnLogWindowButtonClicked() {
-        if (MainGameData.state == GameData.State.RollDie) {
+        if (MainGameData.state == GameData.State.RollDie) {// if current game state is RollDie, it means we need to roll the die
             ViewerHandler.UpdateDieView(true);
             RollTheDie();
             MainGameData.state = GameData.State.Moving;
         }
 
-        else { //Playing
-            ViewerHandler.ChangeAmountOfMoneyAnimation(this, MoneyAtStartOfTurn);
+        else { //Means we finished moving
+            ViewerHandler.ChangeAmountOfMoneyAnimation(this, MainGameData.MoneyAtStartOfTurn);
         }
     }
 
-
+    //Called before the die is rolled
     public void RollTheDie() {
         ViewerHandler.HideWindow(ViewerHandler.GAME_LOG_WINDOW);
-
         int tempRoll = Random.Range(1, 7);
-        //ViewerHandler.UpdateCurrentDie(tempRoll);
-
+      
         ViewerHandler.RollDieAnimation(this, tempRoll);
-
         MainGameData.players[MainGameData.whosTurnIsIt].SetMovesLeft(tempRoll);
-
-       // PlayTurn();
-
     }
 
 
-    public void PlayTurn() {
+    //Checks if players has to move one more tile or it reaced its destination tile
+    public void ContinueTurn() {
         if(MainGameData.players[MainGameData.whosTurnIsIt].GetMovesLeft() <= 0) {
             ReachedFinalTile();
             return;
         }
-
         else {
             MainGameData.players[MainGameData.whosTurnIsIt].SetCurrentPosition((MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition() + 1) % MainGameData.gameTileMap.Length);
 
-            
             ViewerHandler.MovePlayerToPosition(this, MainGameData.players[MainGameData.whosTurnIsIt], MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition());
             MainGameData.players[MainGameData.whosTurnIsIt].MoveOneTile();
         }
-
-
-
     }
 
+    /// IMPORTANT FUNCTION
+    /// Called when the player finished moving.
+    /// We check what is the type of the destination tile and acts accordingly.
+    /// In addition, if we reached a property tile, we also need to check who owns it and act accordingly
     void ReachedFinalTile() {
         Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
-        MoneyAtStartOfTurn = MainGameData.players[MainGameData.whosTurnIsIt].GetMoney();
+        MainGameData.MoneyAtStartOfTurn = MainGameData.players[MainGameData.whosTurnIsIt].GetMoney();
 
         if (tempTile.GetType() == typeof(Property)) {
             Property currentProperty = (Property)tempTile;
-
             if (currentProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // This property is already yours
 
-                if (MainGameData.gameType == GameData.GameType.Upgrades) {//if Game is with upgrades
+                //Enters only in games with upgrades
+                if (MainGameData.gameType == GameData.GameType.Upgrades) {
                     int upgradeCost = (int)(currentProperty.GetCostPrice() * MainGameData.UPGRADE_COST_RATIO);
                     if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - upgradeCost > 0) {
                         MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(upgradeCost);
@@ -88,29 +77,22 @@ public class GameHandler : MonoBehaviour
                          ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
                     }
                 }
-
-                else {//classic game
+                //Enters only in classic games
+                else {
                     ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
                 }
-
-              
-               
             }
             else if (currentProperty.GetOwnedByPlayerIndex() == -1) { //This property is free
                 //make sure the player has enough money to buy the property
-                if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice() > 0) { //that means the player can afford buying the property
-                   // ViewerHandler.ChangeAmountOfMoneyAnimation(this, MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice());
-                    MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(currentProperty.GetCostPrice());
-                  //  currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
-                    currentProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);
+                if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice() > 0) { //That means the player can afford buying the property
+                    MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(currentProperty.GetCostPrice());//Takes money from the player
+                    currentProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);//Make the current property be owned by current player
 
                     ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);
                 }
-                else {
+                else {//Means the player don't have enought money to buy the property
                     ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.NotEnoghtMoney);
                 }
-
-          
             }
             else { //Other player already purchased this property
                 MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(currentProperty.GetTaxPrice());//Takes money from the player and gives it to the player owning this property
@@ -119,18 +101,17 @@ public class GameHandler : MonoBehaviour
                 ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetTaxPrice(), ViewerHandler.LogType.PayTax);
             }
 
-            CheckIfGameOver();
+            CheckIfGameOver();//Every time a turn is finished, we check if the player lost (i.e have 0 or less money)
         }
 
-        else { //Special tile
-
+        else { //Special tile - Can only earn money
             SpecialTile specialTile = (SpecialTile)tempTile;
-            int tempReward = specialTile.GetReward();
-            MainGameData.players[(MainGameData.whosTurnIsIt)].IncreaseMoney(tempReward);
 
+            int tempReward = specialTile.GetReward();//Every time we call GetReward() we receive differnet amount, so we keep it for this turn
+
+            MainGameData.players[(MainGameData.whosTurnIsIt)].IncreaseMoney(tempReward);
             ViewerHandler.UpdateLogWindow(MainGameData, tempReward, ViewerHandler.LogType.ReceiveBonusMoney);
         }
-
        // ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
     }
@@ -138,14 +119,13 @@ public class GameHandler : MonoBehaviour
 
     void CheckIfGameOver() {
         if (MainGameData.players[MainGameData.whosTurnIsIt].CheckIfLostGame()) {// enters when player looses the game
-            // Go Back to main menu and change text to player won
-
             ViewerHandler.GameOver(MainGameData);
         }
 
     }
 
-
+    //Called from main menu when starting a new game
+    //Initialize all relevant data and destroys all current gameobjects
     public void ResetGame() {
         ResetGameData();
 
@@ -155,8 +135,6 @@ public class GameHandler : MonoBehaviour
 
         MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
         ViewerHandler.InitPlayersHUD(MainGameData);
-
-
         ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);
 
         MapBuildingAtStart();
@@ -164,7 +142,6 @@ public class GameHandler : MonoBehaviour
 
         ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll);
-
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
     }
 
@@ -184,6 +161,7 @@ public class GameHandler : MonoBehaviour
 
     }
 
+    //Called evry time a new game begins. Initializes game data tile map. At the end, Updates game view
     void MapBuildingAtStart() {
         MainGameData.gameTileMap = new Tile[ViewerHandler.TILE_MAP.Length];
 
@@ -205,16 +183,14 @@ public class GameHandler : MonoBehaviour
             MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject
             MainGameData.gameTileMap[i].SetTileIndex(i);
         }
-
         ViewerHandler.InitTilesCosts(MainGameData);
     }
 
+    //Called evry time a new game begins. Initializes players details
     void PlayersHandlingAtStart() {
         MainGameData.players = new Player[MainGameData.NUMBER_OF_PLAYERS];
-
         MainGameData.whosTurnIsIt = 0;
-
-        for (int i = 0; i < MainGameData.players.Length; i++) {
+        for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             MainGameData.players[i] = new Player();
             MainGameData.players[i].SetPlayerIndex(i);
             MainGameData.players[i].SetPlayerPieceGameObject(ViewerHandler.PLAYERS_PIECES[i]); //setting player's piece
@@ -222,21 +198,16 @@ public class GameHandler : MonoBehaviour
             MainGameData.players[i].SetMoney(MainGameData.STARTING_AMOUNT_OF_MONEY);
             MainGameData.players[i].SetMovesLeft(0);
 
-            if (i == MainGameData.whosTurnIsIt) MainGameData.players[i].SetPlayerState(Player.PlayerState.RollingDice);
-            else MainGameData.players[i].SetPlayerState(Player.PlayerState.Waiting);
-
-
             ViewerHandler.PlacePlayerAtPosition(MainGameData.players[i], 0);
         }
-
-      
     }
 
+    //Called when a player is upgrading his property
     void UpgradeProperty(Property property) {
         property.SetTaxPrice((int)(property.GetTaxPrice() * MainGameData.TAX_AFTER_UPGRADE_RATIO));
     }
 
-
+    //Toggles menu-window/how-to-play-window accordingly
     public void ToggleMenuAndHowToPlayWindows(bool openHowToPlay) {
         if (openHowToPlay) {
             ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);

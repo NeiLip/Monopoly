@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 51501505}
   - component: {fileID: 51501504}
   m_Layer: 0
-  m_Name: Button_RollTheDie
+  m_Name: Button_LogWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -358,17 +358,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1418885842}
         m_MethodName: OnLogWindowButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 827744620}
-        m_MethodName: PlayButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2163,14 +2152,14 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
-    m_LineSpacing: 1.1
+    m_LineSpacing: 1.2
   m_Text: "\u2022 Each player will get a turn to roll the die and move accordingly\n\u2022
     Upon landing on a free property, the player will automatically purchase\n   it
     if he can afford it\n\u2022 Upon landing on a property that is owned by the other
     player, pay a fine to him\n\u2022 Upon landing on a property you own:\n\t\u2022
-    On classic game: Do nothing\n\t\u2022 On upgrades game: \n\t\t\u2022 If the player
-    has enough money, he will automatically\n\t\t  upgrade it and make the property's
-    tax to be higher"
+    On a CLASSIC GAME: Do nothing\n\t\u2022 On an UPGRADES GAME: \n\t\t\u2022 If
+    the player has enough money, he will automatically\n\t\t  upgrade it and make
+    the property's tax to be higher"
 --- !u!222 &291524585
 CanvasRenderer:
   m_ObjectHideFlags: 0

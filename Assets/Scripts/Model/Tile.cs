@@ -8,6 +8,7 @@ public class Tile
     int tileIndex;
 
 
+    //Default constructor
     public Tile() {
         tileGameObject = null;
         tileIndex = -1;
@@ -18,17 +19,20 @@ public class Tile
         tileIndex = _tileIndex;
     }
 
+    //Setter gameobject
     public void SetTileGameObject(GameObject gameObject) {
         tileGameObject = gameObject;
     }
+    //Getter gameobject
     public GameObject GetTilegameObject() {
         return tileGameObject;
     }
- 
 
+    //Setter tile index
     public void SetTileIndex(int _tileIndex) {
         tileIndex = _tileIndex;
     }
+    //Getter tile index
     public int GetTileIndex() {
         return tileIndex;
     }

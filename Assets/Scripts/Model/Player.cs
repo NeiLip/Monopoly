@@ -4,34 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    // For future possible expansions.
-    // Not in use in this version
-    public enum PlayerState {
-        Null,
-        RollingDice,
-        Playing,
-        Waiting
-    }
-
-    GameObject playerPieceGameObject;
+    GameObject playerPieceGameObject;//piece gameobject
     int playerIndex;
-    int currentPosition;
+    int currentPosition;//tile index
     int money;
 
-    Property[] propertiesBought; //can be use in the future for expansions, we don't really need it so I'm not using it
+    Property[] propertiesBought; //can be use in the future for expansions, we don't really need it so I'm not using it.
 
-    int movesLeft;
-    PlayerState playerState;
+    int movesLeft;//How many moves left for this turn. Will be 0 at the end of each turn, and will receive the die number at the begin of each turn
 
-
+    //Default constructor
     public Player() {
         playerIndex = -1;
         playerPieceGameObject = null;
         currentPosition = -1;
         money = -1;
         movesLeft = 0;
-        playerState = PlayerState.Null;
     }
 
 
@@ -57,6 +45,7 @@ public class Player : MonoBehaviour
     public void SetCurrentPosition(int newPosition) {
         currentPosition = newPosition;
     }
+    //Gets current position
     public int GetCurrentPosition() {
         return currentPosition;
     }
@@ -83,27 +72,19 @@ public class Player : MonoBehaviour
     public int GetMoney() {
         return money;
     }
-
+    //Adds money to player
     public void IncreaseMoney(int sum) {
         money += sum;
     }
+    //Takes money from player
     public void DecreaseMoney(int sum) {
         money -= sum;
     }
 
 
-    /// Check and return if the player lost the game
-    /// <returns> TRUE if the player lost his game</returns>
+    /// Check and return if the player ran out of money.
+    /// <returns> TRUE if the player lost his game </returns>
     public bool CheckIfLostGame() {
-        return (money <= 0);
-    }
-
-    //Sets player's game state
-    public void SetPlayerState(PlayerState state) {
-        playerState = state;
-    }
-    //Gets player's game state
-    public PlayerState GetPlayerState() {
-        return playerState;
+        return (money <= 0); 
     }
 }

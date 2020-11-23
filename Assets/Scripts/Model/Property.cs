@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Property : Tile
 {
+    int ownedBy;//player index who ows this property
+    int costPrice; //How much does this property costs
+    int taxPrice; //How much a player have to pay if the property is held by other player
 
-    int ownedBy;
-    int costPrice; //How much the property costs
-    int taxPrice; //How much a player have to pay if property is held by the other player
-
+    //Default constructor
     public Property() {
         ownedBy = -1;
         costPrice = -1;
@@ -20,23 +20,27 @@ public class Property : Tile
         taxPrice = _finePrice;
     }
 
+    //Setter of owned player index
     public void SetOwnedByPlayerIndex(int _ownedBy) {
         ownedBy = _ownedBy;
     }
+    //Getter of owned player index
     public int GetOwnedByPlayerIndex() {
         return ownedBy;
     }
-
+    //Setter property price
     public void SetCostPrice(int _costPrice) {
         costPrice = _costPrice;
     }
+    //Getter property price
     public int GetCostPrice() {
         return costPrice;
     }
-
+    //Setter property tax
     public void SetTaxPrice(int _taxPrice) {
         taxPrice = _taxPrice;
     }
+    //Getter property tax
     public int GetTaxPrice() {
         return taxPrice;
     }

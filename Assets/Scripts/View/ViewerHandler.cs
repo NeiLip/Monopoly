@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Gets data from game handler and shows relevant and up-to-date data
 public class ViewerHandler : MonoBehaviour
 {
-    public SoundHandler SoundHandler;
+    public SoundHandler SoundHandler;//sound handler reference
 
     [Header("Base Textures")]
-    public Sprite[] DIE_SPRITES;
-    public Sprite[] BASE_PLAYERS_TILES_SPRITES;
-    public Sprite BASE_NEUTRAL_TILE_SPRITE;
+    public Sprite[] DIE_SPRITES;//All faces sprites (6 in our die)
+    public Sprite[] BASE_PLAYERS_TILES_SPRITES;//Currently contains red and blue tiles
+    public Sprite BASE_NEUTRAL_TILE_SPRITE;//Gray tile
     public GameObject[] PLAYERS_PIECES;
     public GameObject BasePlayerHUD;
 
     [Header("Gameobjects")]
     public GameObject HUD_Canvas;
-    public GameObject DIE_BACKGROUND;
-    public GameObject CURRENT_DIE;
-    public Toggle gameTypeToggle;
-    public ParticleSystem ON_WIN_PARTICLE_SYSTEM;
+    public GameObject DIE_BACKGROUND;//empty die background.
+    public GameObject CURRENT_DIE;//Current die face. Will set it to one of DIE_SPRITES[] elements
+    public Toggle gameTypeToggle; //The toggle from main menu
+    public ParticleSystem ON_WIN_PARTICLE_SYSTEM; //Particle system in main menu. Will be played on win
 
     [Header("Tile Map")]
-    public GameObject[] TILE_MAP;
+    public GameObject[] TILE_MAP;//Our actual tile map.
 
     [Header("Windows")]
     public GameObject GAME_LOG_WINDOW;
@@ -37,9 +38,9 @@ public class ViewerHandler : MonoBehaviour
     public Text Die_Ready_To_Roll_Text;
 
 
-    readonly Vector3[] playersOrientationOnTile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};
+    readonly Vector3[] playersPositionWithinATile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};// the position in a tile of both players (so they won't cover each other)
 
-
+    //Called from game handler only once on awake 
     public void OnWakeUp() {
         MainMenuSubTitle_Text.text = "";
         ShowWindow(MAIN_MENU_WINDOW);
@@ -57,12 +58,12 @@ public class ViewerHandler : MonoBehaviour
             MainGameData.PlayersHUD[i].transform.SetParent(HUD_Canvas.transform);
             MainGameData.PlayersHUD[i].transform.localScale = new Vector3(1f, 1f, 1f);
 
-            if (i == 0) {//player 1
+            //player 1
+            if (i == 0) {
                 MainGameData.PlayersHUD[i].transform.localPosition = new Vector3(-88.5f, 71.8f, 0f);
-
-
             }
-            else if (i == 1) {//player2
+            //player2
+            else if (i == 1) {//Mainly changes texts alignments
                 MainGameData.PlayersHUD[i].transform.localPosition = new Vector3(88.5f, 71.8f, 0f);
                 MainGameData.PlayersHUD[i].transform.Find("PlayerName_Text").GetComponent<Text>().text = "PLayer 2";
                 MainGameData.PlayersHUD[i].transform.Find("PlayerName_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
@@ -73,14 +74,27 @@ public class ViewerHandler : MonoBehaviour
 
     }
 
+    //Called when a player losses the game
+    public void GameOver(GameData MainGameData) {
+        int winningPlayer = (MainGameData.nextPlayer) + 1;
+        MainMenuTitle_Text.text = "Player " + winningPlayer + " you WIN!";
+        MainMenuSubTitle_Text.text = AddCommasToNumber(MainGameData.players[MainGameData.nextPlayer].GetMoney())
+            + "$ left"; //Gets winner's amount of money left and add commas
+        ShowWindow(MAIN_MENU_WINDOW);
+        ON_WIN_PARTICLE_SYSTEM.time = 0;
+        ON_WIN_PARTICLE_SYSTEM.Play();
+    }
 
+    //Show specific window. Created for convenience
     public void ShowWindow(GameObject window) {
         window.SetActive(true);
     }
+    //Hide specific window. Created for convenience
     public void HideWindow(GameObject window) {
         window.SetActive(false);
     }
 
+    //Updated the die to show a number or the text "ready to roll!"
     public void UpdateDieView(bool showNumber) {
         if (showNumber) {
             CURRENT_DIE.SetActive(true);
@@ -92,25 +106,24 @@ public class ViewerHandler : MonoBehaviour
         }
     }
 
+    //Updates players HUD. Updates their amount of money and moves active_player_indication
     public void UpdateHUD(GameData MainGameData) {
         for (int i = 0; i < MainGameData.NUMBER_OF_PLAYERS; i++) {
             if (i == MainGameData.whosTurnIsIt)
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(true);
-
             else
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
 
-           
             MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = AddCommasToNumber(MainGameData.players[i].GetMoney()) + "$";
         }
 
         if (MainGameData.gameType == GameData.GameType.Upgrades) { //If it's a game with upgrades, means that taxes may change
             UpdateTilesTax(MainGameData);
         }
-       
     }
 
-    public void UpdateProperty(GameData MainGameData) {
+    //Updates property's sprite
+    public void UpdatePropertySprite(GameData MainGameData) {
         Tile temp = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
         if (temp.GetType() == typeof(Property)) {
             Property currentProperty = (Property)temp;
@@ -120,53 +133,7 @@ public class ViewerHandler : MonoBehaviour
         }
     }
 
-
-
-    public enum LogType {
-        Roll,
-        BuyProperty,
-        PayTax,
-        ReceiveBonusMoney,
-        NotEnoghtMoney,
-        AlreadyBoughtIt,
-        Upgrade
-    }
-    public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
-        switch (type) {
-            case LogType.Roll:
-                LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
-                LogSum_Text.text = "Roll the die";
-                break;
-            case LogType.BuyProperty:
-                LogTitle_Text.text = "You landed on a free property";
-                LogSum_Text.text = "Pay " + sum.ToString() + "$";
-                break;
-            case LogType.PayTax:
-                LogTitle_Text.text = "You landed on Player " + (((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1) + "'s property";
-                LogSum_Text.text = "Lose " + sum.ToString() + "$";
-                break;
-            case LogType.ReceiveBonusMoney:
-                LogTitle_Text.text = "You landed on a Bonus tile";
-                LogSum_Text.text = "Get " + sum.ToString() + "$";
-                break;
-            case LogType.NotEnoghtMoney:
-                LogTitle_Text.text = "It costs " + sum +"$. You can not afford it" ;
-                LogSum_Text.text = "Sorry";
-                break;
-            case LogType.AlreadyBoughtIt:
-                LogTitle_Text.text = "This property is already yours!";
-                LogSum_Text.text = "";
-                break;
-            case LogType.Upgrade:
-                LogTitle_Text.text = "You can upgrade this property. Tax increased!";
-                LogSum_Text.text = "Pay " + sum.ToString() + "$";
-                break;
-            default:
-                break;
-        }
-    }
-
-
+    //Initializes tiles prices
     public void InitTilesCosts(GameData MainGameData) {
         for (int i = 0; i < TILE_MAP.Length; i++) {
             if (TILE_MAP[i].transform.Find("TileTexts/Cost_Text") != null) {
@@ -176,7 +143,9 @@ public class ViewerHandler : MonoBehaviour
         }
         UpdateTilesTax(MainGameData);
     }
-
+    //Initializes tiles taxes.
+    //In classic games- called only once at the beginning
+    //Called only during games with upgrades.
     public void UpdateTilesTax(GameData MainGameData) {
         for (int i = 0; i < TILE_MAP.Length; i++) {
             if (TILE_MAP[i].transform.Find("TileTexts/Tax_Text") != null) {
@@ -187,32 +156,31 @@ public class ViewerHandler : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Placing a player piece on a specific tile
-    /// </summary>
+    /// Placing a player piece on a specific tile.
+    /// Because during the game we animates the movement, this function is called only once at the beginning of the game.
     /// <param name="player">  Player to place </param>
     /// <param name="newPosition"> The new tile index </param>
     public void PlacePlayerAtPosition(Player player, int newPosition) {
-        Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
+        Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersPositionWithinATile[player.GetPlayerIndex()];
         player.GetPlayerPieceGameObject().transform.localPosition = tempNewPosition;
     }
 
-    /// <summary>
     /// Moving (animating) a player piece to a specific tile
-    /// </summary>
     /// <param name="player">  Player to place </param>
     /// <param name="newPosition"> The new tile index </param>
     public void MovePlayerToPosition(GameHandler gameHandler,Player player, int newPosition) {
-        Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersOrientationOnTile[player.GetPlayerIndex()];
+        Vector3 tempNewPosition = TILE_MAP[newPosition].transform.localPosition + playersPositionWithinATile[player.GetPlayerIndex()];
         StartCoroutine(MovePlayerOverSeconds(gameHandler, player.GetPlayerPieceGameObject(), tempNewPosition));
 
     }
 
+    //Updates the die to show a specific value (in our die it can be 1-6)
     public void UpdateCurrentDie(int rolledNumber) {
         SoundHandler.PlayTick();
         CURRENT_DIE.GetComponent<SpriteRenderer>().sprite = DIE_SPRITES[rolledNumber - 1];
     }
 
+    //Moves player's piece from one position to another over PLAYER_MOVEMENT_DURATION seconds
     private IEnumerator MovePlayerOverSeconds(GameHandler gameHandler, GameObject objectToMove, Vector3 endPosition) {
         float duration = gameHandler.MainGameData.PLAYER_MOVEMENT_DURATION;
         float elapsedTime = 0;
@@ -225,24 +193,16 @@ public class ViewerHandler : MonoBehaviour
         }
         objectToMove.transform.position = endPosition;
 
-        gameHandler.PlayTurn();
-//        gameData.isBringCardToFrontCoroutineRun = false;
+        gameHandler.ContinueTurn();//Finished moving, continue turn
     }
 
-    public void GameOver(GameData MainGameData) {
-        int winningPlayer = ((MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS) + 1;
-        MainMenuTitle_Text.text = "Player " + winningPlayer + " you WIN!";
-        MainMenuSubTitle_Text.text =  AddCommasToNumber(MainGameData.players[(MainGameData.whosTurnIsIt + 1) % MainGameData.NUMBER_OF_PLAYERS].GetMoney())
-            + "$ left"; //Gets winner's amount of money left and add commas
-        ShowWindow(MAIN_MENU_WINDOW);
-        ON_WIN_PARTICLE_SYSTEM.time = 0;
-        ON_WIN_PARTICLE_SYSTEM.Play();
-    }
-
+ 
+    //Add commas to numbers. For example: 2500 return 2,500
     string AddCommasToNumber(int number) {
         return string.Format("{0:n0}", number);
     }
 
+    //Called every time the die is rolled.
     public void RollDieAnimation(GameHandler gameHandler, int finalNummber) {
         StartCoroutine(ChangeDieFace(gameHandler, finalNummber));
     }
@@ -254,7 +214,7 @@ public class ViewerHandler : MonoBehaviour
         int preRolled = finalNumber;
         while (currentDuration < finalDuration) {
             int newRolled = Random.Range(1, 7);
-            while (newRolled == preRolled || newRolled == finalNumber) {
+            while (newRolled == preRolled || newRolled == finalNumber) { //Just make sure the next random number is not the same as the previous. Otherwise it looks wierd..
                 newRolled = Random.Range(1, 7);
             }
             UpdateCurrentDie(newRolled);
@@ -265,26 +225,18 @@ public class ViewerHandler : MonoBehaviour
         UpdateCurrentDie(finalNumber);
         yield return new WaitForSeconds(0.5f);
 
-        gameHandler.PlayTurn();
+        gameHandler.ContinueTurn();//Finished rolling dice, contine turn
     }
 
+    //Called every time any of the players' money is changed
     public void ChangeAmountOfMoneyAnimation(GameHandler gameHandler, int moneyAtBeginOfTurn) {
         HideWindow(GAME_LOG_WINDOW);
-
-        //Property currentTile = (Property)gameHandler.MainGameData.gameTileMap[gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetCurrentPosition()];
-        //int finalAmountOfMoney = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney() + currentTile.GetCostPrice();
         StartCoroutine(ChangeAmountOfMoneyAnimationCoroutine(gameHandler, moneyAtBeginOfTurn));
-     
-
-
-
-
     }
 
     private IEnumerator ChangeAmountOfMoneyAnimationCoroutine(GameHandler gameHandler, int moneyAtBeginOfTurn) {
-        int finalAmount = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney();
-
-        Text currentText = gameHandler.MainGameData.PlayersHUD[gameHandler.MainGameData.whosTurnIsIt].transform.Find("PlayerMoney_Text").GetComponent<Text>();
+        int finalAmount = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney();//Get player's current amount of money (i.e after the player paid/received money)
+        Text currentText = gameHandler.MainGameData.PlayersHUD[gameHandler.MainGameData.whosTurnIsIt].transform.Find("PlayerMoney_Text").GetComponent<Text>(); //Current player's PlayerMoney_Text
 
         float duration = gameHandler.MainGameData.MONEY_ANIMATION_SPEED;
         float elapsedTime = 0;
@@ -299,8 +251,9 @@ public class ViewerHandler : MonoBehaviour
         UpdateAfterMoneyAnimation(gameHandler.MainGameData);
     }
 
+    //Updates relevant windows according money changes.
     void UpdateAfterMoneyAnimation(GameData MainGameData) {
-        UpdateProperty(MainGameData);
+        UpdatePropertySprite(MainGameData);
 
         UpdateDieView(false);
         MainGameData.state = GameData.State.RollDie;
@@ -310,6 +263,54 @@ public class ViewerHandler : MonoBehaviour
 
         UpdateHUD(MainGameData);
         ShowWindow(GAME_LOG_WINDOW);
+    }
+
+
+
+    //Different log types
+    public enum LogType {
+        Roll,
+        BuyProperty,
+        PayTax,
+        ReceiveBonusMoney,
+        NotEnoghtMoney,
+        AlreadyBoughtIt,
+        Upgrade
+    }
+    //Updates the log window
+    public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
+        switch (type) {
+            case LogType.Roll:
+                LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
+                LogSum_Text.text = "Roll the die";
+                break;
+            case LogType.BuyProperty:
+                LogTitle_Text.text = "You landed on a free property";
+                LogSum_Text.text = "Pay " + sum.ToString() + "$";
+                break;
+            case LogType.PayTax:
+                LogTitle_Text.text = "You landed on Player " + (MainGameData.nextPlayer + 1) + "'s property";
+                LogSum_Text.text = "Lose " + sum.ToString() + "$";
+                break;
+            case LogType.ReceiveBonusMoney:
+                LogTitle_Text.text = "You landed on a Bonus tile";
+                LogSum_Text.text = "Get " + sum.ToString() + "$";
+                break;
+            case LogType.NotEnoghtMoney:
+                LogTitle_Text.text = "It costs " + sum + "$. You can not afford it";
+                LogSum_Text.text = "Sorry";
+                break;
+            case LogType.AlreadyBoughtIt:
+                LogTitle_Text.text = "This property is already yours!";
+                LogSum_Text.text = "";
+                break;
+            case LogType.Upgrade:
+                LogTitle_Text.text = "You can upgrade this property. Tax increased!";
+                LogSum_Text.text = "Pay " + sum.ToString() + "$";
+                break;
+            default:
+                break;
+        }
     }
 
 }
