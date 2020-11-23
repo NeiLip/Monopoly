@@ -54,16 +54,16 @@ public class ViewerHandler : MonoBehaviour
             MainGameData.PlayersHUD[i].transform.localScale = new Vector3(1f, 1f, 1f);
 
             if (i == 0) {//player 1
-                MainGameData.PlayersHUD[0].transform.localPosition = new Vector3(-88.5f, 71.8f, 0f);
+                MainGameData.PlayersHUD[i].transform.localPosition = new Vector3(-88.5f, 71.8f, 0f);
 
 
             }
             else if (i == 1) {//player2
-                MainGameData.PlayersHUD[1].transform.localPosition = new Vector3(88.5f, 71.8f, 0f);
-                MainGameData.PlayersHUD[1].transform.Find("PlayerName_Text").GetComponent<Text>().text = "PLayer 2";
-                MainGameData.PlayersHUD[1].transform.Find("PlayerName_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
-                MainGameData.PlayersHUD[1].transform.Find("PlayerMoney_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
-                MainGameData.PlayersHUD[1].transform.Find("active_player_indication").gameObject.SetActive(false);
+                MainGameData.PlayersHUD[i].transform.localPosition = new Vector3(88.5f, 71.8f, 0f);
+                MainGameData.PlayersHUD[i].transform.Find("PlayerName_Text").GetComponent<Text>().text = "PLayer 2";
+                MainGameData.PlayersHUD[i].transform.Find("PlayerName_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
+                MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().alignment = TextAnchor.MiddleRight;
+                MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
             }
         }
 
@@ -96,7 +96,7 @@ public class ViewerHandler : MonoBehaviour
             else
                 MainGameData.PlayersHUD[i].transform.Find("active_player_indication").gameObject.SetActive(false);
 
-           // string withCommas = string.Format("{0:n0}", MainGameData.players[i].GetMoney());
+           
             MainGameData.PlayersHUD[i].transform.Find("PlayerMoney_Text").GetComponent<Text>().text = AddCommasToNumber(MainGameData.players[i].GetMoney()) + "$";
         }
 
@@ -262,5 +262,47 @@ public class ViewerHandler : MonoBehaviour
         gameHandler.PlayTurn();
     }
 
+    public void ChangeAmountOfMoneyAnimation(GameHandler gameHandler, int moneyAtBeginOfTurn) {
+        HideWindow(GAME_LOG_WINDOW);
+
+        //Property currentTile = (Property)gameHandler.MainGameData.gameTileMap[gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetCurrentPosition()];
+        //int finalAmountOfMoney = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney() + currentTile.GetCostPrice();
+        StartCoroutine(ChangeAmountOfMoneyAnimationCoroutine(gameHandler, moneyAtBeginOfTurn));
+     
+
+
+
+
+    }
+
+    private IEnumerator ChangeAmountOfMoneyAnimationCoroutine(GameHandler gameHandler, int moneyAtBeginOfTurn) {
+        int finalAmount = gameHandler.MainGameData.players[gameHandler.MainGameData.whosTurnIsIt].GetMoney();
+
+        Text currentText = gameHandler.MainGameData.PlayersHUD[gameHandler.MainGameData.whosTurnIsIt].transform.Find("PlayerMoney_Text").GetComponent<Text>();
+
+        float duration = gameHandler.MainGameData.MONEY_ANIMATION_SPEED;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration) {
+            currentText.text = AddCommasToNumber((int)Mathf.Lerp(moneyAtBeginOfTurn, finalAmount, (elapsedTime / duration))) + "$";
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        UpdateAfterMoneyAnimation(gameHandler.MainGameData);
+    }
+
+    void UpdateAfterMoneyAnimation(GameData MainGameData) {
+        UpdateProperty(MainGameData);
+
+        UpdateDieView(false);
+        MainGameData.state = GameData.State.RollDie;
+        MainGameData.IncreaseWhosTurnIsIt();
+
+        UpdateLogWindow(MainGameData, -1, LogType.Roll); //Updates to "Roll the die" title
+
+        UpdateHUD(MainGameData);
+        ShowWindow(GAME_LOG_WINDOW);
+    }
 
 }

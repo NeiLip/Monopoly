@@ -23,6 +23,9 @@ public class GameData
     public readonly float PLAYER_MOVEMENT_DURATION = .2f; //Time in seconds to move from tile to tile
     public readonly float DIE_ROLL_ANIMATION_SPEED = 1.7f; //uses as multiplication factor
 
+    public readonly float MONEY_ANIMATION_SPEED = .3f;//Total time of the animation
+
+
     public readonly float TAX_COST_RATIO = .1f;
 
     public readonly float TAX_AFTER_UPGRADE_RATIO = 1.6f; //The new tax
@@ -31,7 +34,12 @@ public class GameData
 
     public Player[] players;
     
-    public int whosTurnIsIt;
+    public int whosTurnIsIt = 0;
+    public int nextPlayer {
+        get {
+            return ((whosTurnIsIt + 1) % NUMBER_OF_PLAYERS);
+        }
+    }
 
     public Tile[] gameTileMap;
 
