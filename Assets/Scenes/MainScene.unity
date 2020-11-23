@@ -1449,7 +1449,7 @@ GameObject:
   - component: {fileID: 197496495}
   - component: {fileID: 197496494}
   m_Layer: 0
-  m_Name: Text (1)
+  m_Name: QuestionMark_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2158,8 +2158,8 @@ MonoBehaviour:
     if he can afford it\n\u2022 Upon landing on a property that is owned by the other
     player, pay a fine to him\n\u2022 Upon landing on a property you own:\n\t\u2022
     On a CLASSIC GAME: Do nothing\n\t\u2022 On an UPGRADES GAME: \n\t\t\u2022 If
-    the player has enough money, he will automatically\n\t\t  upgrade it and make
-    the property's tax to be higher"
+    the player has enough money, he will automatically\n\t\t  upgrade the property
+    and make its fine rate to be higher"
 --- !u!222 &291524585
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12472,7 +12472,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1500$ left
+  m_Text: 1,500$ left
 --- !u!222 &1270760634
 CanvasRenderer:
   m_ObjectHideFlags: 0
