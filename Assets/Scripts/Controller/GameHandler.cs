@@ -12,7 +12,6 @@ public class GameHandler : MonoBehaviour
     public GameData MainGameData;// Game data reference
 
     
-
     //Called only once at awake
     void Awake() {
         MainGameData = new GameData();
@@ -129,34 +128,26 @@ public class GameHandler : MonoBehaviour
     //Initialize all relevant data and destroys all current gameobjects
     public void ResetGame() {
         ResetGameData();
-
         //Check if classic game or game with upgrades. If enabled than it is a game with upgrades
         if (ViewerHandler.gameTypeToggle.isOn) MainGameData.gameType = GameData.GameType.Upgrades;
         else MainGameData.gameType = GameData.GameType.Classic;
 
         MainGameData.PlayersHUD = new GameObject[MainGameData.NUMBER_OF_PLAYERS];
-        ViewerHandler.InitPlayersHUD(MainGameData);
-   
+        
         MapBuildingAtStart();
         PlayersHandlingAtStart();
-
-        ViewerHandler.UpdateHUD(MainGameData);
-        ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.Roll);
-
-        ViewerHandler.HideWindow(ViewerHandler.MAIN_MENU_WINDOW);
-        ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
+        ViewerHandler.ResetGameViewer(MainGameData);
     }
 
+    //Destroys previous game pieces and resets tiles 
     void ResetGameData() {
-        foreach (Player player in MainGameData.players) {
+        foreach (Player player in MainGameData.players) { //Destroys players pieces gameobjects
             Destroy(player.GetPlayerPieceGameObject());
         }
-
-        foreach (Tile tile in MainGameData.gameTileMap) {
+        foreach (Tile tile in MainGameData.gameTileMap) { //Resets all game tiles to be the neutral gray tile
             tile.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = ViewerHandler.BASE_NEUTRAL_TILE_SPRITE;
         }
-
-        foreach (GameObject gameObject in MainGameData.PlayersHUD) {
+        foreach (GameObject gameObject in MainGameData.PlayersHUD) { //Destroys players HUDs gameobjects
             Destroy(gameObject);
         }
 
@@ -166,7 +157,7 @@ public class GameHandler : MonoBehaviour
     //Called evry time a new game begins. Initializes game data tile map. At the end, Updates game view
     void MapBuildingAtStart() {
         MainGameData.gameTileMap = new Tile[ViewerHandler.TILE_MAP.Length];
-        MainGameData.InsertPricesToPremadeProperties();
+        InsertPricesToPremadeProperties();
 
         int preMadePropertiesIndex = 0;
         for (int i = 0; i < MainGameData.gameTileMap.Length; i++) {
@@ -188,6 +179,25 @@ public class GameHandler : MonoBehaviour
             MainGameData.gameTileMap[i].SetTileIndex(i);
         }
         ViewerHandler.InitTilesCosts(MainGameData);
+    }
+
+
+    //Insert property price and fine price for eact property
+     void InsertPricesToPremadeProperties() {
+        MainGameData.PRE_MADE_PROPERTIES = new Property[20];//we know the actual map and each game the map stays the same. So I allowed myself use an actual number
+
+        int minPrice = (int)(MainGameData.PROPERTIES_PRICE_AVERAGE * 0.5);
+        int maxPrice = (int)(MainGameData.PROPERTIES_PRICE_AVERAGE * 1.5);
+        int sub = maxPrice - minPrice;
+
+        int increment = (int)(sub / MainGameData.PRE_MADE_PROPERTIES.Length);
+
+        int currentPrice = minPrice;
+
+        for (int i = 0; i < MainGameData.PRE_MADE_PROPERTIES.Length; i++) {
+            MainGameData.PRE_MADE_PROPERTIES[i] = new Property(-1, currentPrice, (int)(currentPrice * MainGameData.FINE_COST_RATIO));
+            currentPrice += increment;
+        }
     }
 
     //Called evry time a new game begins. Initializes players details

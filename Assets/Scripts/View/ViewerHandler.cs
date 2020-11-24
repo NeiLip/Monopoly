@@ -49,6 +49,16 @@ public class ViewerHandler : MonoBehaviour
         UpdateDieView(false);
     }
 
+    public void ResetGameViewer(GameData MainGameData) {
+        InitPlayersHUD(MainGameData);
+
+        UpdateHUD(MainGameData);
+        UpdateLogWindow(MainGameData, -1, LogType.Roll);
+
+        HideWindow(MAIN_MENU_WINDOW);
+        ShowWindow(GAME_LOG_WINDOW);
+    }
+
     /// <summary>
     /// Initiating players HUDs for two players
     /// </summary>

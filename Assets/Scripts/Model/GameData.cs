@@ -71,23 +71,4 @@ public class GameData
         whosTurnIsIt++;
         if (whosTurnIsIt == NUMBER_OF_PLAYERS) whosTurnIsIt = 0; //If last player in array, next player is at 0
     }
-
-
-    //Insert property price and fine price for eact property
-    public void InsertPricesToPremadeProperties() {
-        PRE_MADE_PROPERTIES = new Property[20];//we know the actual map and each game the map stays the same. So I allowed myself use an actual number
-
-        int minPrice = (int)(PROPERTIES_PRICE_AVERAGE * 0.5);
-        int maxPrice = (int)(PROPERTIES_PRICE_AVERAGE * 1.5);
-        int sub = maxPrice - minPrice;
-
-        int increment = (int)(sub / PRE_MADE_PROPERTIES.Length);
-
-        int currentPrice = minPrice;
-        
-        for (int i = 0; i < PRE_MADE_PROPERTIES.Length; i++) {
-            PRE_MADE_PROPERTIES[i] = new Property(-1, currentPrice, (int)(currentPrice * FINE_COST_RATIO));
-            currentPrice += increment;
-        }
-    }
 }
