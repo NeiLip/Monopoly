@@ -11,14 +11,13 @@ public class GameHandler : MonoBehaviour
     [HideInInspector]
     public GameData MainGameData;// Game data reference
 
-    
     //Called only once at awake
     void Awake() {
         MainGameData = new GameData();
         ViewerHandler.OnWakeUp();
     }
 
-    //Called when log menu button is clicked 
+    //Called when log window button is clicked 
     public void OnLogWindowButtonClicked() {
         if (MainGameData.state == GameData.State.RollDie) {// if current game state is RollDie, it means we need to roll the die
             ViewerHandler.UpdateDieView(true);
@@ -39,7 +38,6 @@ public class GameHandler : MonoBehaviour
         MainGameData.players[MainGameData.whosTurnIsIt].SetMovesLeft(tempRoll);
     }
 
-
     //Checks if the current player have moves left or he reached destination
     public void ContinueTurn() {
         if(MainGameData.players[MainGameData.whosTurnIsIt].GetMovesLeft() <= 0) {//reached destination
@@ -57,7 +55,9 @@ public class GameHandler : MonoBehaviour
     /// IMPORTANT FUNCTION
     /// Called when the player finished moving.
     /// We check what is the type of the destination tile and act accordingly.
-    /// In addition, if we reached a property tile, we also need to check who owns it and act accordingly
+    /// If we reached a property tile, we also need to check who owns it and act accordingly.
+    /// This function also updates the players amount of money and properties ownership (if needed).
+    /// Just to mention that the 'visual update' will occur after clicking on log window button
     void ReachedFinalTile() {
         MainGameData.isCurrentPlayerCouldNotBuyProperty = false;//resets the variable
 
@@ -72,17 +72,16 @@ public class GameHandler : MonoBehaviour
                     if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - upgradeCost > 0) {//Player has enough money to upgrade the property
                         MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(upgradeCost);
                         UpgradeProperty(currentProperty);
-                        ViewerHandler.UpdateLogWindow(MainGameData, upgradeCost, ViewerHandler.LogType.Upgrade);
+                        ViewerHandler.UpdateLogWindow(MainGameData, upgradeCost, GameData.LogType.Upgrade);
                     }
                     else {//Player did not have enough money to buy the property
                         MainGameData.isCurrentPlayerCouldNotBuyProperty = true;
-                        ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
+                        ViewerHandler.UpdateLogWindow(MainGameData, -1, GameData.LogType.AlreadyBoughtIt);
                     }
                 }
-                //Enters only in classic games
-                else {
+                else { //Enters only in classic games. This property is already yours
                     MainGameData.isCurrentPlayerCouldNotBuyProperty = true;
-                    ViewerHandler.UpdateLogWindow(MainGameData, -1, ViewerHandler.LogType.AlreadyBoughtIt);
+                    ViewerHandler.UpdateLogWindow(MainGameData, -1, GameData.LogType.AlreadyBoughtIt);
                 }
             }
             else if (currentProperty.GetOwnedByPlayerIndex() == -1) { //This property is free
@@ -90,28 +89,27 @@ public class GameHandler : MonoBehaviour
                 if (MainGameData.players[MainGameData.whosTurnIsIt].GetMoney() - currentProperty.GetCostPrice() > 0) { //That means the player can afford buying the property
                     MainGameData.players[MainGameData.whosTurnIsIt].DecreaseMoney(currentProperty.GetCostPrice());//Takes money from the player
                     currentProperty.SetOwnedByPlayerIndex(MainGameData.whosTurnIsIt);//Make the current property be owned by current player
-                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.BuyProperty);
+                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), GameData.LogType.BuyProperty);
                 }
                 else {//Means the player don't have enought money to buy the property
                     MainGameData.isCurrentPlayerCouldNotBuyProperty = true;
-                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), ViewerHandler.LogType.NotEnoghtMoney);
+                    ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetCostPrice(), GameData.LogType.NotEnoghtMoney);
                 }
             }
             else { //Other player already purchased this property
                 MainGameData.players[(MainGameData.whosTurnIsIt)].DecreaseMoney(currentProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
                 MainGameData.players[currentProperty.GetOwnedByPlayerIndex()].IncreaseMoney(currentProperty.GetFinePrice());//Takes money from the player and gives it to the player owning this property
 
-                ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetFinePrice(), ViewerHandler.LogType.PayFine);
+                ViewerHandler.UpdateLogWindow(MainGameData, currentProperty.GetFinePrice(), GameData.LogType.PayFine);
             }
         }
-
         else { //Special tile - Can only earn money
             SpecialTile specialTile = (SpecialTile)tempTile;
 
             int tempReward = specialTile.GetReward();//Every time we call GetReward() we receive differnet amount, so we keep it for this turn
 
             MainGameData.players[(MainGameData.whosTurnIsIt)].IncreaseMoney(tempReward);
-            ViewerHandler.UpdateLogWindow(MainGameData, tempReward, ViewerHandler.LogType.ReceiveBonusMoney);
+            ViewerHandler.UpdateLogWindow(MainGameData, tempReward, GameData.LogType.ReceiveBonusMoney);
         }
        // ViewerHandler.UpdateHUD(MainGameData);
         ViewerHandler.ShowWindow(ViewerHandler.GAME_LOG_WINDOW);
@@ -121,7 +119,6 @@ public class GameHandler : MonoBehaviour
         if (MainGameData.players[MainGameData.whosTurnIsIt].CheckIfLostGame()) {// enters when player looses the game
             ViewerHandler.GameOver(MainGameData);
         }
-
     }
 
     //Called from main menu when starting a new game
@@ -172,15 +169,12 @@ public class GameHandler : MonoBehaviour
                 //MainGameData.gameTileMap[i] = new Property();
                 MainGameData.gameTileMap[i] = MainGameData.PRE_MADE_PROPERTIES[preMadePropertiesIndex];
                 preMadePropertiesIndex++;
-
             }
-
             MainGameData.gameTileMap[i].SetTileGameObject(ViewerHandler.TILE_MAP[i]); //Setting the tile gameobject
             MainGameData.gameTileMap[i].SetTileIndex(i);
         }
         ViewerHandler.InitTilesCosts(MainGameData);
     }
-
 
     //Insert property price and fine price for eact property
      void InsertPricesToPremadeProperties() {

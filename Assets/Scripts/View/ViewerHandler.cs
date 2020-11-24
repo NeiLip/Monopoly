@@ -53,7 +53,7 @@ public class ViewerHandler : MonoBehaviour
         InitPlayersHUD(MainGameData);
 
         UpdateHUD(MainGameData);
-        UpdateLogWindow(MainGameData, -1, LogType.Roll);
+        UpdateLogWindow(MainGameData, -1, GameData.LogType.Roll);
 
         HideWindow(MAIN_MENU_WINDOW);
         ShowWindow(GAME_LOG_WINDOW);
@@ -272,50 +272,41 @@ public class ViewerHandler : MonoBehaviour
         MainGameData.state = GameData.State.RollDie;
         MainGameData.IncreaseWhosTurnIsIt();
 
-        UpdateLogWindow(MainGameData, -1, LogType.Roll); //Updates to "Roll the die" title
+        UpdateLogWindow(MainGameData, -1, GameData.LogType.Roll); //Updates to "Roll the die" title
         UpdateHUD(MainGameData);
         ShowWindow(GAME_LOG_WINDOW);
     }
 
 
-    //Different log types
-    public enum LogType {
-        Roll,
-        BuyProperty,
-        PayFine,
-        ReceiveBonusMoney,
-        NotEnoghtMoney,
-        AlreadyBoughtIt,
-        Upgrade
-    }
+
     //Updates the log window
-    public void UpdateLogWindow(GameData MainGameData, int sum, LogType type) {
+    public void UpdateLogWindow(GameData MainGameData, int sum, GameData.LogType type) {
         switch (type) {
-            case LogType.Roll:
+            case GameData.LogType.Roll:
                 LogTitle_Text.text = "Player " + (MainGameData.whosTurnIsIt + 1) + ", it's your time to roll!";
                 LogSum_Text.text = "Roll the die";
                 break;
-            case LogType.BuyProperty:
+            case GameData.LogType.BuyProperty:
                 LogTitle_Text.text = "You landed on a free property";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
-            case LogType.PayFine:
+            case GameData.LogType.PayFine:
                 LogTitle_Text.text = "You landed on Player " + (MainGameData.nextPlayer + 1) + "'s property";
                 LogSum_Text.text = "Lose " + sum.ToString() + "$";
                 break;
-            case LogType.ReceiveBonusMoney:
+            case GameData.LogType.ReceiveBonusMoney:
                 LogTitle_Text.text = "You landed on a Bonus tile";
                 LogSum_Text.text = "Get " + sum.ToString() + "$";
                 break;
-            case LogType.NotEnoghtMoney:
+            case GameData.LogType.NotEnoghtMoney:
                 LogTitle_Text.text = "It costs " + sum + "$. You can not afford it";
                 LogSum_Text.text = "Sorry";
                 break;
-            case LogType.AlreadyBoughtIt:
+            case GameData.LogType.AlreadyBoughtIt:
                 LogTitle_Text.text = "This property is already yours!";
                 LogSum_Text.text = "";
                 break;
-            case LogType.Upgrade:
+            case GameData.LogType.Upgrade:
                 LogTitle_Text.text = "Available for upgrade. Higher fines!";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;

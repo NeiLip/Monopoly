@@ -5,13 +5,23 @@ using UnityEngine;
 //Contains all relevant data and stats for a specific game. 
 public class GameData
 {
-    public enum State {//After clicking on log menu button, we check this variable
+    public enum State {//After clicking on log window button, we check this variable to determine what to do next
         RollDie,
         Moving
     }
     public enum GameType {
         Classic,
         Upgrades
+    }
+   
+    public enum LogType { //Different log types. Determines what viewerhandler show
+        Roll,
+        BuyProperty,
+        PayFine,
+        ReceiveBonusMoney,
+        NotEnoghtMoney,
+        AlreadyBoughtIt,
+        Upgrade
     }
 
     //Mapinfo
@@ -51,7 +61,7 @@ public class GameData
     public Property[] PRE_MADE_PROPERTIES; //Being constructed at begin. We are  not changing it.
 
     //Game
-    public State state;//Current game state. After clicking on log menu button, we check this variable
+    public State state;//Current game state. After clicking on log window button, we check this variable to determine what to do next
     public GameType gameType = GameType.Upgrades; //Determine the game type (Current options are Classic and Upgrades)
 
 
