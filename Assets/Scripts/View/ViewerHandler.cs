@@ -38,7 +38,7 @@ public class ViewerHandler : MonoBehaviour
     public Text Die_Ready_To_Roll_Text;
 
 
-    readonly Vector3[] playersPositionWithinATile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, -.15f, 0)};// the players' pieces position within a tile (so they won't cover each other)
+    readonly Vector3[] playersPositionWithinATile = {new Vector3(.75f, .55f, 0), new Vector3(-.75f, .2f, 0)};// the players' pieces position within a tile (so they won't cover each other)
 
     //Called from game handler only once on awake 
     public void OnWakeUp() {
@@ -124,9 +124,9 @@ public class ViewerHandler : MonoBehaviour
 
     //Updates property's sprite
     public void UpdatePropertySprite(GameData MainGameData) {
-        Tile temp = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
-        if (temp.GetType() == typeof(Property)) {
-            Property currentProperty = (Property)temp;
+        Tile tempTile = MainGameData.gameTileMap[MainGameData.players[MainGameData.whosTurnIsIt].GetCurrentPosition()];
+        if (tempTile.GetType() == typeof(Property)) {
+            Property currentProperty = (Property)tempTile;
             if (currentProperty.GetOwnedByPlayerIndex() == MainGameData.whosTurnIsIt) { // Makes sure the player owns the property
                 currentProperty.GetTilegameObject().GetComponent<SpriteRenderer>().sprite = BASE_PLAYERS_TILES_SPRITES[MainGameData.whosTurnIsIt];
             }
@@ -240,17 +240,22 @@ public class ViewerHandler : MonoBehaviour
         float duration = gameHandler.MainGameData.MONEY_ANIMATION_SPEED;
         float elapsedTime = 0;
 
-        while (elapsedTime < duration) {
-            SoundHandler.PlaySnatch();
-            currentText.text = AddCommasToNumber((int)Mathf.Lerp(moneyAtBeginOfTurn, finalAmount, (elapsedTime / duration))) + "$";
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+
+        if (!gameHandler.MainGameData.isCurrentPlayerCouldNotBuyProperty) {//If player did not buy anything, skip
+            while (elapsedTime < duration) {
+                SoundHandler.PlaySnatch();
+                currentText.text = AddCommasToNumber((int)Mathf.Lerp(moneyAtBeginOfTurn, finalAmount, (elapsedTime / duration))) + "$";
+                elapsedTime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
-        UpdateAfterMoneyAnimation(gameHandler.MainGameData);
+        UpdateAfterMoneyAnimation(gameHandler, gameHandler.MainGameData);
     }
 
     //Updates relevant windows according money changes.
-    void UpdateAfterMoneyAnimation(GameData MainGameData) {
+    void UpdateAfterMoneyAnimation(GameHandler gameHandler,GameData MainGameData) {
+        gameHandler.CheckIfGameOver();//Every time a turn is finished, we check if the player lost (i.e have 0 or less money)
+
         UpdatePropertySprite(MainGameData);
         UpdateDieView(false);
 
@@ -301,7 +306,7 @@ public class ViewerHandler : MonoBehaviour
                 LogSum_Text.text = "";
                 break;
             case LogType.Upgrade:
-                LogTitle_Text.text = "Property is available for upgrade. Fine increased!";
+                LogTitle_Text.text = "Available for upgrade. Higher fines!";
                 LogSum_Text.text = "Pay " + sum.ToString() + "$";
                 break;
             default:

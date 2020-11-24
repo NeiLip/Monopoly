@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player
 {
     GameObject playerPieceGameObject;//piece gameobject
     int playerIndex;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     //Sets piece game object
     public void SetPlayerPieceGameObject(GameObject gameObject) {
-        playerPieceGameObject = Instantiate(gameObject); //gameObject;
+        playerPieceGameObject = gameObject;
     }
     //Gets piece game object
     public GameObject GetPlayerPieceGameObject() {

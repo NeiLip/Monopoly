@@ -7,7 +7,7 @@ using UnityEngine;
 //Contains all relevant data and stats for a specific game. 
 public class GameData
 {
-    public enum State {
+    public enum State {//After clicking on log menu button, we check this variable
         RollDie,
         Moving
     }
@@ -16,8 +16,8 @@ public class GameData
         Upgrades
     }
 
-    //Map game info
-    public readonly int NUMBER_OF_PLAYERS = 2;
+    //Mapinfo
+    public readonly int[] SPECIAL_TILES_INDEXES = {6, 12, 18};//for 6x6x6x6 tiles games
 
     //Money management
     public readonly int STARTING_AMOUNT_OF_MONEY = 1500;
@@ -31,11 +31,12 @@ public class GameData
 
     //Animations info
     public readonly float PLAYER_MOVEMENT_DURATION = .3f; //Time in seconds to move from tile to tile
-    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.3f; //uses as multiplication factor
+    public readonly float DIE_ROLL_ANIMATION_SPEED = 1.4f; //uses as multiplication factor
     public readonly float MONEY_ANIMATION_SPEED = .3f;//Total time of the animation
 
 
     //Players
+    public readonly int NUMBER_OF_PLAYERS = 2;
     public Player[] players;    
     public int whosTurnIsIt = 0;
     public int nextPlayer {//Gets next player
@@ -45,14 +46,14 @@ public class GameData
     }
     public GameObject[] PlayersHUD;//Players hud's showing whos playing and how much money each player has
     public int MoneyAtStartOfTurn = 0; //current player's money amount at begin turn. Uses for animating money changes
-
+    public bool isCurrentPlayerCouldNotBuyProperty = false;//if last plater could not buy a property (or upgrade his own). to know if should play money animation
 
     //Map and Tiles
     public Tile[] gameTileMap;//All current game tiles
     public Property[] PRE_MADE_PROPERTIES; //Being constructed at begin. We are  not changing it.
 
     //Game
-    public State state;//Current game state
+    public State state;//Current game state. After clicking on log menu button, we check this variable
     public GameType gameType = GameType.Upgrades; //Determine the game type (Current options are Classic and Upgrades)
 
 
@@ -63,8 +64,6 @@ public class GameData
         whosTurnIsIt = 0;
         PlayersHUD = new GameObject[0];
         state = State.RollDie;
-
-        InsertPricesToProperties();
     }
 
     //Change current player. If we are last player, next playr is at 0
@@ -75,7 +74,7 @@ public class GameData
 
 
     //Insert property price and fine price for eact property
-    void InsertPricesToProperties() {
+    public void InsertPricesToPremadeProperties() {
         PRE_MADE_PROPERTIES = new Property[20];//we know the actual map and each game the map stays the same. So I allowed myself use an actual number
 
         int minPrice = (int)(PROPERTIES_PRICE_AVERAGE * 0.5);
