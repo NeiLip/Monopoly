@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 //Contains all relevant data and stats for a specific game. 
 public class GameData
 {
