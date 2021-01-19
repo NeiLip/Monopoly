@@ -16083,7 +16083,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Joyvoo Monoply
+  m_Text: My Monoply
 --- !u!222 &1860319426
 CanvasRenderer:
   m_ObjectHideFlags: 0
